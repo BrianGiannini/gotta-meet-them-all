@@ -7,4 +7,5 @@
     <string name="job">Rôle/Métier</string>
     <string name="unknown_user">Unknown user</string>
     <string name="scan_user_hint">Find this person and scan their QR code!</string>
+    <string name="go_to_scan_button_text">Go to Scan Button</string>
 </resources>

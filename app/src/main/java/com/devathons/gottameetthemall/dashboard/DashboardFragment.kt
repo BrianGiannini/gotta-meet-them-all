@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.devathons.gottameetthemall.databinding.FragmentDashboardBinding
+import com.devathons.gottameetthemall.scan.ScanFragmentDirections
 
 class DashboardFragment : Fragment() {
     private val viewBinding by lazy { FragmentDashboardBinding.inflate(layoutInflater) }
@@ -27,6 +29,11 @@ class DashboardFragment : Fragment() {
         with(viewBinding.personsRecyclerView) {
             layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
             adapter = personsAdapter
+        }
+
+        viewBinding.goScanButton.setOnClickListener {
+            val action = DashboardFragmentDirections.actionDashboardFragmentToScanFragment()
+            findNavController().navigate(action)
         }
 
         return viewBinding.root
