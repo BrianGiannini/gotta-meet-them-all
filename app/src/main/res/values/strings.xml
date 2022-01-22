@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Gotta Meet Them All</string>
+    <string name="first_name">Prénom</string>
+    <string name="save">Sauvegarder</string>
+    <string name="name">Nom</string>
 </resources>
