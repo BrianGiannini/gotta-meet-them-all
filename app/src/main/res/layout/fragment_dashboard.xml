@@ -6,9 +6,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".dashboard.DashboardFragment">
 
+    <TextView
+        android:id="@+id/score"
+        android:padding="5dp"
+        android:textColor="@color/black"
+        android:background="@color/light_gray"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        tools:text="3/10 users discovered:"
+        android:layout_height="wrap_content"/>
+
     <androidx.recyclerview.widget.RecyclerView
+        app:layout_constraintTop_toBottomOf="@id/score"
         android:id="@+id/persons_recycler_view"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         tools:itemCount="10"
         android:layout_width="match_parent"
         tools:listitem="@layout/person_layout" />

@@ -14,7 +14,12 @@ class DashboardFragment : Fragment() {
     private val viewModel by lazy { ViewModelProvider(this)[DashboardViewModel::class.java] }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val personsAdapter = UsersAdapter(viewModel.users + listOf(null, null, null, null))
+        val users = viewModel.users
+        val discovered = users.count { it != null }
+        val total = users.size
+        viewBinding.score.text = "$discovered/$total users discovered:"
+
+        val personsAdapter = UsersAdapter(users)
         with(viewBinding.personsRecyclerView) {
             layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
             adapter = personsAdapter

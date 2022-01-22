@@ -7,5 +7,5 @@ import com.devathons.gottameetthemall.data.UsersRepository
 import timber.log.Timber
 
 class DashboardViewModel : ViewModel() {
-    val users : List<User> = UsersRepository.users
+    val users : List<User?> = UsersRepository.users
 }
