@@ -54,19 +54,15 @@ class ScanFragment : Fragment(R.layout.fragment_scan), CoroutineScope {
         super.onViewCreated(view, savedInstanceState)
 
         listenToQrCodeData()
-
     }
 
     private fun listenToQrCodeData() {
 
         launch {
             viewModel.qrCodeData.collect { userRaw ->
-                if (userRaw.data != "") {
-                    Timber.d("userRam $userRaw")
-                    val user = User("Brian")
-                    val action = ScanFragmentDirections.actionScanFragmentToProfileFragment(user)
-                    findNavController().navigate(action)
-                }
+                Timber.d("userRam $userRaw")
+                val action = ScanFragmentDirections.actionScanFragmentToProfileFragment(userRaw)
+                findNavController().navigate(action)
             }
         }
 

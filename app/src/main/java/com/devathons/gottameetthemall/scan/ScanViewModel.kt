@@ -10,17 +10,31 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import com.devathons.gottameetthemall.data.User
+import com.devathons.gottameetthemall.data.UsersRepository
+import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 import timber.log.Timber
+import kotlin.coroutines.CoroutineContext
 
-class ScanViewModel : ViewModel() {
 
-    data class QrData(val data: String = "")
+class ScanViewModel : ViewModel(), CoroutineScope {
+
+    private val job = SupervisorJob()
+    override val coroutineContext: CoroutineContext = job + Dispatchers.Main
+
     var isScanned = false
 
-    private val _qrCodeData = MutableStateFlow<QrData>(QrData(""))
-    val qrCodeData: StateFlow<QrData> = _qrCodeData
+    private val channelData = Channel<User>()
+    val qrCodeData: Flow<User> = channelData.receiveAsFlow()
+
+    private var gson = Gson()
 
     fun startCamera(context: Context, surfaceProvider: Preview.SurfaceProvider, lifecycleOwner: LifecycleOwner) {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
@@ -31,7 +45,7 @@ class ScanViewModel : ViewModel() {
 
             // Preview
             val preview = Preview.Builder()
-                .setTargetResolution(Size(400, 400))
+                .setTargetResolution(Size(512, 512))
                 .build()
                 .also {
                     it.setSurfaceProvider(surfaceProvider)
@@ -39,7 +53,7 @@ class ScanViewModel : ViewModel() {
 
             val imageCapture = ImageCapture.Builder()
                 .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
-                .setTargetResolution(Size(400, 400))
+                .setTargetResolution(Size(512, 512))
                 // We request aspect ratio but no resolution to match preview config, but letting
                 // CameraX optimize for whatever specific resolution best fits requested capture mode
                 // Set initial target rotation, we will have to call this again if rotation changes
@@ -50,13 +64,18 @@ class ScanViewModel : ViewModel() {
 
             val imageAnalyzer = ImageAnalysis.Builder().build().also {
                 it.setAnalyzer(executor, QrCodeAnalyzer { qrCodes ->
+
                     qrCodes?.forEach { barcode ->
+                        Timber.d("QR HERE ${barcode.rawValue}")
                         barcode.rawValue?.let { data ->
                             if (!isScanned && data != "") {
-                                isScanned = true
-                                // UsersRepository.addNewUser() // TODO
-                                _qrCodeData.value = QrData(data)
                                 Timber.d("QR Code detected: $data")
+                                isScanned = true
+                                val user = gson.fromJson(data, User::class.java)
+                                UsersRepository.addNewUser(user)
+                                launch {
+                                    channelData.send(user)
+                                }
                             }
                         }
                     }
