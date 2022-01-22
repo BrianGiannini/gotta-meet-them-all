@@ -64,17 +64,23 @@ class ScanViewModel : ViewModel(), CoroutineScope {
 
             val imageAnalyzer = ImageAnalysis.Builder().build().also {
                 it.setAnalyzer(executor, QrCodeAnalyzer { qrCodes ->
-
                     qrCodes?.forEach { barcode ->
-                        Timber.d("QR HERE ${barcode.rawValue}")
-                        barcode.rawValue?.let { data ->
-                            if (!isScanned && data != "") {
-                                Timber.d("QR Code detected: $data")
-                                isScanned = true
-                                val user = gson.fromJson(data, User::class.java)
-                                UsersRepository.addNewUser(user)
-                                launch {
-                                    channelData.send(user)
+                        if (!isScanned) {
+                            barcode.displayValue?.let { data ->
+                                if (data != "") {
+                                    Timber.d("QR Code detected: $data")
+                                    try {
+                                        val user = gson.fromJson(data, User::class.java)
+                                        if (user != null) {
+                                            isScanned = true
+                                        }
+                                        UsersRepository.addNewUser(user)
+                                        launch {
+                                            channelData.send(user)
+                                        }
+                                    } catch (e: Exception) {
+                                        Timber.d("Not a valid QR Cede", e)
+                                    }
                                 }
                             }
                         }
