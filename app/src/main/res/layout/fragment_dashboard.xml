@@ -3,16 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".dashboard.DashboardFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-    <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/persons_recycler_view"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Dashboard fragment" />
+        android:background="@color/teal_200"
+        tools:itemCount="10"
+        android:layout_width="match_parent"
+        tools:listitem="@layout/person_layout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
