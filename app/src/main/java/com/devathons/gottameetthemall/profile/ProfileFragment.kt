@@ -43,6 +43,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             initProfileValue(user)
             preventEdition()
         } else {
+            Glide.with(this).load(R.drawable.portrait_placeholder).into(binding.picture)
             viewModel.profile?.let { initProfileValue(it) }
             resumeEdition()
         }
@@ -84,7 +85,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         binding.lastName.setText(user.lastName)
         binding.job.setText(user.job)
         binding.description.setText(user.description)
-        Glide.with(this).load(R.drawable.portrait_placeholder).into(binding.picture)
     }
 
     private fun retrieveArguments(): ProfileFragmentArgs {

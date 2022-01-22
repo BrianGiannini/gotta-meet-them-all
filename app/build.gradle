@@ -92,4 +92,7 @@ dependencies {
     //Serializer/deserializer
     implementation 'com.google.code.gson:gson:2.8.9'
 
+    //Circle image
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
 }
