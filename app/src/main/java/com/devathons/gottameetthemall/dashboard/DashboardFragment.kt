@@ -24,6 +24,7 @@ class DashboardFragment : Fragment() {
             return
         }
 
+        viewBinding.displayQrCodeButton.setOnClickListener { QrCodeDialogFragment().show(parentFragmentManager, null) }
         viewBinding.editProfileButton.setOnClickListener { editMyProfile() }
         viewBinding.profileName.text = "${currentUser.firstName} ${currentUser.lastName}"
         viewBinding.profileJob.text = currentUser.job
