@@ -8,7 +8,7 @@ import com.devathons.gottameetthemall.R
 import com.devathons.gottameetthemall.data.User
 import com.devathons.gottameetthemall.databinding.PersonLayoutBinding
 
-class UsersAdapter(private val users: List<User?>) : RecyclerView.Adapter<UsersAdapter.ViewHolder>() {
+class UsersAdapter(private val users: List<User?>, private val onItemClickListener: (Int) -> Unit) : RecyclerView.Adapter<UsersAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = PersonLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(view)
@@ -23,6 +23,7 @@ class UsersAdapter(private val users: List<User?>) : RecyclerView.Adapter<UsersA
             jobTextView.setTextColor(Color.GRAY)
             jobTextView.text = context.getString(R.string.scan_user_hint)
         } else {
+            root.setOnClickListener { onItemClickListener.invoke(position) }
             imageView.setColorFilter(context.getColor(R.color.teal_200), android.graphics.PorterDuff.Mode.MULTIPLY);
             nameTextView.text = "${user.firstName} ${user.lastName}"
             jobTextView.text = user.job
