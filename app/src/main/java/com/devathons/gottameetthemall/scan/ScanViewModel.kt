@@ -1,9 +1,7 @@
 package com.devathons.gottameetthemall.scan
 
-import android.Manifest
 import android.content.Context
 import android.util.Size
-import android.widget.Toast
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageCapture
@@ -12,9 +10,18 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import timber.log.Timber
 
+
+
 class ScanViewModel : ViewModel() {
+
+    data class QrData(val data: String = "")
+
+    private val _qrCodeData = MutableStateFlow<QrData>(QrData(""))
+    val qrCodeData: StateFlow<QrData> = _qrCodeData
 
     fun startCamera(context: Context, surfaceProvider: Preview.SurfaceProvider, lifecycleOwner: LifecycleOwner) {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
@@ -44,9 +51,11 @@ class ScanViewModel : ViewModel() {
 
             val imageAnalyzer = ImageAnalysis.Builder().build().also {
                 it.setAnalyzer(executor, QrCodeAnalyzer { qrCodes ->
-                    qrCodes?.forEach {
-                        Toast.makeText(context, it.rawValue, Toast.LENGTH_SHORT).show()
-                        Timber.d("QR Code detected: " + it.rawValue + ".")
+                    qrCodes?.forEach { barcode ->
+                        barcode.rawValue?.let { data ->
+                            _qrCodeData.value = QrData(data)
+                        Timber.d("QR Code detected: $data")
+                        }
                     }
                 })
             }
@@ -73,11 +82,6 @@ class ScanViewModel : ViewModel() {
             }
 
         }, ContextCompat.getMainExecutor(context))
-    }
-
-    companion object {
-        private const val REQUEST_CODE_PERMISSIONS = 10
-        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
     }
 
 }

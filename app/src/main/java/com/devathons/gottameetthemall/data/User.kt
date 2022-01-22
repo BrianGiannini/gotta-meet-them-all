@@ -9,7 +9,7 @@ data class User(
     val lastName: String? = null,
     val job: String? = null,
     val description: String? = null,
-)
+) : Parcelable
 
 val User.qrCodeData: String get() = firstName
 

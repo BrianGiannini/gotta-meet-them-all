@@ -10,20 +10,24 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.devathons.gottameetthemall.R
 import com.devathons.gottameetthemall.databinding.FragmentScanBinding
+import kotlinx.coroutines.flow.collect
 
 class ScanFragment : Fragment(R.layout.fragment_scan) {
 
     private lateinit var viewModel: ScanViewModel
     private lateinit var binding: FragmentScanBinding
+    private val args: ScanFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentScanBinding.inflate(layoutInflater)
-
         viewModel = ViewModelProvider(this)[ScanViewModel::class.java]
 
         // Request camera permissions
@@ -39,6 +43,18 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+//        viewModel.qrCodeData.collect {
+//
+//        }
+    }
+
+    fun navigateToUser(qrCodeContent: String) {
+        val action = ScanFragmentDirections.actionScanFragmentToProfileFragment()
+        findNavController().navigate(action)
+    }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(

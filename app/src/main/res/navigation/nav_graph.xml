@@ -20,6 +20,13 @@
         android:id="@+id/scanFragment"
         android:name="com.devathons.gottameetthemall.scan.ScanFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_scan" />
+        tools:layout="@layout/fragment_scan" >
+        <action
+            android:id="@+id/action_scanFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <argument
+            android:name="user"
+            app:argType="com.devathons.gottameetthemall.data.User" />
+    </fragment>
 
 </navigation>
