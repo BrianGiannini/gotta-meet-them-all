@@ -18,7 +18,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
 class ScanFragment : Fragment(R.layout.fragment_scan), CoroutineScope {
@@ -57,12 +56,12 @@ class ScanFragment : Fragment(R.layout.fragment_scan), CoroutineScope {
 
     private fun listenToQrCodeData() {
         launch {
-            viewModel.qrCodeData.collect { userRaw ->
-                Timber.d("userRam $userRaw")
-                val action = ScanFragmentDirections.actionScanFragmentToProfileFragment(userRaw)
+            viewModel.qrCodeData.collect { user ->
+                val action = ScanFragmentDirections.actionScanFragmentToProfileFragment(user)
                 findNavController().navigate(action)
             }
         }
+
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {

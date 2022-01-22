@@ -1,6 +1,8 @@
 package com.devathons.gottameetthemall.profile
 
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,16 +15,19 @@ import com.bumptech.glide.Glide
 import com.devathons.gottameetthemall.R
 import com.devathons.gottameetthemall.data.User
 import com.devathons.gottameetthemall.databinding.FragmentProfileBinding
+import java.util.*
 
-class ProfileFragment : Fragment(R.layout.fragment_profile) {
+class ProfileFragment : Fragment(R.layout.fragment_profile), TextToSpeech.OnInitListener {
 
     private lateinit var viewModel: ProfileViewModel
+    private lateinit var tts: TextToSpeech
 
     private var _binding: FragmentProfileBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    var userSpeech: User = User("")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,20 +41,34 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[ProfileViewModel::class.java]
 
+        tts = TextToSpeech(requireContext(), this)
+
         val args = retrieveArguments()
         val user = args.user
 
+        with(binding) {
+            firstName.text.toString()
+        }
+
         if (user != null) {
             initProfileValue(user)
+            userSpeech = user
             preventEdition()
+
         } else {
             Glide.with(this).load(R.drawable.portrait_placeholder).into(binding.picture)
             viewModel.profile?.let { initProfileValue(it) }
             resumeEdition()
         }
 
-        binding.picture.setOnClickListener {
 
+        binding.picture.setOnClickListener {
+            speakOut(
+                binding.firstName.text.toString(),
+                binding.lastName.text.toString(),
+                binding.job.text.toString(),
+                binding.description.text.toString()
+            )
         }
 
         binding.saveProfileButton.setOnClickListener {
@@ -95,5 +114,45 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onInit(status: Int) {
+        if (status == TextToSpeech.SUCCESS) {
+            // set US English as language for tts
+            val result = tts.setLanguage(Locale.FRANCE)
+
+            Log.d("TTS", "TTS succesfully initiallised")
+
+            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Log.e("TTS", "The Language specified is not supported!")
+            }
+
+            if (userSpeech.firstName != "") {
+                speakOut(
+                    binding.firstName.text.toString(),
+                    binding.lastName.text.toString(),
+                    binding.job.text.toString(),
+                    binding.description.text.toString()
+                )
+            }
+
+        } else {
+            Log.e("TTS", "Initilization Failed!")
+        }
+    }
+
+    private fun speakOut(firstName: String, lastName: String, job: String, notes: String) {
+        Log.d("TTS", "play TTS")
+
+        val text = "$firstName $lastName, $job. $notes"
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "")
+    }
+
+    override fun onDestroy() {
+        // Shutdown TTS
+        tts.stop()
+        tts.shutdown()
+
+        super.onDestroy()
     }
 }
