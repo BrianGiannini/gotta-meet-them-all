@@ -9,14 +9,21 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.devathons.gottameetthemall.databinding.FragmentDashboardBinding
-import com.devathons.gottameetthemall.scan.ScanFragmentDirections
 
 class DashboardFragment : Fragment() {
     private val viewBinding by lazy { FragmentDashboardBinding.inflate(layoutInflater) }
     private val viewModel by lazy { ViewModelProvider(this)[DashboardViewModel::class.java] }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View = viewBinding.root
+
+    override fun onResume() {
+        super.onResume()
         val currentUser = viewModel.currentUser
+        if (currentUser == null) {
+            val action = DashboardFragmentDirections.actionDashboardFragmentToProfileFragment()
+            findNavController().navigate(action)
+            return
+        }
         viewBinding.profileName.text = "${currentUser.firstName} ${currentUser.lastName}"
         viewBinding.profileJob.text = currentUser.job
 
@@ -27,7 +34,7 @@ class DashboardFragment : Fragment() {
 
         val personsAdapter = UsersAdapter(users)
         with(viewBinding.personsRecyclerView) {
-            layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+            layoutManager = LinearLayoutManager(activity)
             adapter = personsAdapter
         }
 
@@ -35,7 +42,5 @@ class DashboardFragment : Fragment() {
             val action = DashboardFragmentDirections.actionDashboardFragmentToScanFragment()
             findNavController().navigate(action)
         }
-
-        return viewBinding.root
     }
 }

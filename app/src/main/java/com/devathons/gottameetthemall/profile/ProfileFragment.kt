@@ -1,24 +1,21 @@
 package com.devathons.gottameetthemall.profile
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.devathons.gottameetthemall.R
 import com.devathons.gottameetthemall.data.User
 import com.devathons.gottameetthemall.databinding.FragmentProfileBinding
-import com.devathons.gottameetthemall.scan.ScanFragmentDirections
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private lateinit var viewModel: ProfileViewModel
-
 
     private var _binding: FragmentProfileBinding? = null
 
@@ -46,7 +43,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             initProfileValue(user)
             preventEdition()
         } else {
-            initProfileValue(viewModel.getProfile())
+            viewModel.profile?.let { initProfileValue(it) }
             resumeEdition()
         }
 
