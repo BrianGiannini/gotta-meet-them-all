@@ -20,10 +20,11 @@ class DashboardFragment : Fragment() {
         super.onResume()
         val currentUser = viewModel.currentUser
         if (currentUser == null) {
-            val action = DashboardFragmentDirections.actionDashboardFragmentToProfileFragment()
-            findNavController().navigate(action)
+            editMyProfile()
             return
         }
+
+        viewBinding.editProfileButton.setOnClickListener { editMyProfile() }
         viewBinding.profileName.text = "${currentUser.firstName} ${currentUser.lastName}"
         viewBinding.profileJob.text = currentUser.job
 
@@ -42,5 +43,10 @@ class DashboardFragment : Fragment() {
             val action = DashboardFragmentDirections.actionDashboardFragmentToScanFragment()
             findNavController().navigate(action)
         }
+    }
+
+    private fun editMyProfile() {
+        val action = DashboardFragmentDirections.actionDashboardFragmentToProfileFragment()
+        findNavController().navigate(action)
     }
 }
