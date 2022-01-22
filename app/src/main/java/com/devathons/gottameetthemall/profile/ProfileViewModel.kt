@@ -1,12 +1,8 @@
 package com.devathons.gottameetthemall.profile
 
-import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
 import com.devathons.gottameetthemall.data.ProfileRepository
 import com.devathons.gottameetthemall.data.User
-import com.google.zxing.BarcodeFormat
-import com.journeyapps.barcodescanner.BarcodeEncoder
-import com.google.gson.Gson
 
 class ProfileViewModel : ViewModel() {
 

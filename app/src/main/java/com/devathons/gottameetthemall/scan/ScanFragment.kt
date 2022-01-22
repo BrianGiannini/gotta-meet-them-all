@@ -3,16 +3,15 @@ package com.devathons.gottameetthemall.scan
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.devathons.gottameetthemall.R
-import com.devathons.gottameetthemall.data.User
 import com.devathons.gottameetthemall.databinding.FragmentScanBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -57,7 +56,6 @@ class ScanFragment : Fragment(R.layout.fragment_scan), CoroutineScope {
     }
 
     private fun listenToQrCodeData() {
-
         launch {
             viewModel.qrCodeData.collect { userRaw ->
                 Timber.d("userRam $userRaw")
@@ -65,8 +63,6 @@ class ScanFragment : Fragment(R.layout.fragment_scan), CoroutineScope {
                 findNavController().navigate(action)
             }
         }
-
-
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {

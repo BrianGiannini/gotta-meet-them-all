@@ -23,7 +23,6 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
-
 class ScanViewModel : ViewModel(), CoroutineScope {
 
     private val job = SupervisorJob()

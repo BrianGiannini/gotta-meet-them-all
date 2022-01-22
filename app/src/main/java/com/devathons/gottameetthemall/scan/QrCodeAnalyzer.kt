@@ -1,15 +1,6 @@
 package com.devathons.gottameetthemall.scan
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.Context.CAMERA_SERVICE
-import android.hardware.camera2.CameraAccessException
-import android.hardware.camera2.CameraCharacteristics
-import android.hardware.camera2.CameraManager
-import android.os.Build
-import android.util.SparseIntArray
-import android.view.Surface
-import androidx.annotation.RequiresApi
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
