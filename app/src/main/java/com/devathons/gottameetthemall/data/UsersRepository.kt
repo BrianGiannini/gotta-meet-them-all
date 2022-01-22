@@ -4,8 +4,8 @@ package com.devathons.gottameetthemall.data
 object UsersRepository {
     val users
         get() = listOf(
-            User("Timothée"),
-            User("Brian"),
-            User("Florian"),
+            User("Timothée", "Rey-Vibet", "Product Owner", "Il est roux"),
+            User("Brian", "Ginanini", "Cobotics Software Engineer", "Il est grand"),
+            User("Florian", "Guyet", "HRI Software Engineer", "Il est barbu")
         )
 }
