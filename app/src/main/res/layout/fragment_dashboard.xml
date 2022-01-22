@@ -13,7 +13,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:src="@drawable/ic_baseline_account_box_24"
+            android:src="@drawable/ic_baseline_emoji_emotions_24"
             android:id="@+id/profile_image"
             android:layout_width="60dp"
             android:layout_height="60dp"
@@ -49,26 +49,28 @@
         <ImageButton
             android:id="@+id/edit_profile_button"
             android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_margin="5sp"
-            android:background="@null"
-            android:scaleType="fitXY"
+            android:layout_height="35dp"
+            app:tint="@color/black"
+            android:layout_marginStart="5dp"
+            android:scaleType="centerCrop"
             app:layout_constraintStart_toEndOf="@id/profile_name"
-            android:src="@drawable/ic_baseline_account_box_24"
+            android:src="@drawable/ic_baseline_edit_24"
             app:layout_constraintBottom_toBottomOf="@+id/profile_name"
             app:layout_constraintTop_toTopOf="@+id/profile_name" />
 
         <ImageButton
             android:id="@+id/display_qr_code_button"
-            android:scaleType="fitXY"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_margin="5sp"
-            android:background="@null"
-            android:src="@drawable/ic_baseline_account_box_24"
+            android:layout_marginEnd="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_baseline_qr_code_2_24"
+            app:tint="@color/black"
             app:layout_constraintBottom_toBottomOf="@+id/profile_image"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/profile_image" />
+            app:layout_constraintTop_toTopOf="@+id/profile_image"
+            app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
