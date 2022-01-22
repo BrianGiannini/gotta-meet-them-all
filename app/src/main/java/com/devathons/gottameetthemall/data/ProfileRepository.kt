@@ -2,8 +2,9 @@ package com.devathons.gottameetthemall.data
 
 import timber.log.Timber
 
-class ProfileRepository {
-    var user: User = User("Tim")
+// Replace by class and use independence injection
+object ProfileRepository {
+    var user: User = User("Timothée", "Rey Vibet", "Product Owner")
         private set
 
     fun updateUser(firstName: String, lastName: String, job: String, description: String) {

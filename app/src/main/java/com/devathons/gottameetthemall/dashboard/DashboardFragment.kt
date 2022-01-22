@@ -14,6 +14,10 @@ class DashboardFragment : Fragment() {
     private val viewModel by lazy { ViewModelProvider(this)[DashboardViewModel::class.java] }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val currentUser = viewModel.currentUser
+        viewBinding.profileName.text = "${currentUser.firstName} ${currentUser.lastName}"
+        viewBinding.profileJob.text = currentUser.job
+
         val users = viewModel.users
         val discovered = users.count { it != null }
         val total = users.size

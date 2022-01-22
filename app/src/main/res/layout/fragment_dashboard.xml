@@ -6,15 +6,81 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".dashboard.DashboardFragment">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/dashboard_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:src="@drawable/ic_baseline_account_box_24"
+            android:id="@+id/profile_image"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/profile_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/profile_image"
+            app:layout_constraintTop_toTopOf="@id/profile_image"
+            tools:text="Hermione Granger" />
+
+        <TextView
+            android:id="@+id/profile_job"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/profile_image"
+            app:layout_constraintStart_toEndOf="@id/profile_image"
+            tools:text="Wizard" />
+
+        <ImageButton
+            android:id="@+id/edit_profile_button"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="5sp"
+            android:background="@null"
+            android:scaleType="fitXY"
+            app:layout_constraintStart_toEndOf="@id/profile_name"
+            android:src="@drawable/ic_baseline_account_box_24"
+            app:layout_constraintBottom_toBottomOf="@+id/profile_name"
+            app:layout_constraintTop_toTopOf="@+id/profile_name" />
+
+        <ImageButton
+            android:id="@+id/display_qr_code_button"
+            android:scaleType="fitXY"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="5sp"
+            android:background="@null"
+            android:src="@drawable/ic_baseline_account_box_24"
+            app:layout_constraintBottom_toBottomOf="@+id/profile_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/profile_image" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <TextView
+        android:layout_height="wrap_content"
         android:id="@+id/score"
         android:padding="5dp"
         android:textColor="@color/black"
         android:background="@color/light_gray"
-        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
         tools:text="3/10 users discovered:"
-        android:layout_height="wrap_content"/>
+        app:layout_constraintTop_toBottomOf="@id/dashboard_header" />
 
     <androidx.recyclerview.widget.RecyclerView
         app:layout_constraintTop_toBottomOf="@id/score"
