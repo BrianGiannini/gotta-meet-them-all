@@ -9,7 +9,6 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/persons_recycler_view"
         android:layout_height="match_parent"
-        android:background="@color/teal_200"
         tools:itemCount="10"
         android:layout_width="match_parent"
         tools:listitem="@layout/person_layout" />
