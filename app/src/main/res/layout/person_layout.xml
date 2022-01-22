@@ -9,12 +9,14 @@
         android:id="@+id/image_view"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        tools:tint="@color/teal_200"
         android:src="@drawable/ic_baseline_account_box_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:textColor="@color/black"
         android:id="@+id/name_text_view"
         android:textStyle="bold"
         android:layout_width="wrap_content"
@@ -26,6 +28,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:textColor="@color/black"
         android:id="@+id/job_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

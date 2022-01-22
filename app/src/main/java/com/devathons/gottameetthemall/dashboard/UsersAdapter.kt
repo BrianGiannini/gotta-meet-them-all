@@ -16,13 +16,14 @@ class UsersAdapter(private val users: List<User?>) : RecyclerView.Adapter<UsersA
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = with(holder.viewBinding) {
         val user = users[position]
+        val context = root.context
         if (user == null) {
-            val context = root.context
             nameTextView.setTextColor(Color.GRAY)
             nameTextView.text = context.getString(R.string.unknown_user)
             jobTextView.setTextColor(Color.GRAY)
             jobTextView.text = context.getString(R.string.scan_user_hint)
         } else {
+            imageView.setColorFilter(context.getColor(R.color.teal_200), android.graphics.PorterDuff.Mode.MULTIPLY);
             nameTextView.text = "${user.firstName} ${user.lastName}"
             jobTextView.text = user.job
         }
