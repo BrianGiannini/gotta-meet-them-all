@@ -5,5 +5,6 @@ data class User(
     val lastName: String? = null,
     val job: String? = null,
     val description: String? = null,
-    val qrCode: String = firstName
 )
+
+val User.qrCodeData: String get() = firstName

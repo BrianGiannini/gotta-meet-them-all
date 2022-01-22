@@ -1,12 +1,12 @@
 package com.devathons.gottameetthemall.profile
 
 import androidx.lifecycle.ViewModel
-import com.devathons.gottameetthemall.data.UserRepo
+import com.devathons.gottameetthemall.data.ProfileRepository
 import timber.log.Timber
 
 class ProfileViewModel : ViewModel() {
 
-    private val userRepo = UserRepo()
+    private val userRepo = ProfileRepository()
 
     fun display() = Timber.e("user ${getProfile()}")
 
