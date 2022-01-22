@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.devathons.gottameetthemall.databinding.FragmentDashboardBinding
-import com.devathons.gottameetthemall.scan.ScanFragmentDirections
 
 class DashboardFragment : Fragment() {
     private val viewBinding by lazy { FragmentDashboardBinding.inflate(layoutInflater) }
@@ -37,7 +36,7 @@ class DashboardFragment : Fragment() {
 
         val personsAdapter = UsersAdapter(users) { position ->
             val user = users[position] ?: return@UsersAdapter
-            val action = ScanFragmentDirections.actionScanFragmentToProfileFragment(user)
+            val action = DashboardFragmentDirections.actionShowUserFromDashboard(user)
             findNavController().navigate(action)
         }
         with(viewBinding.personsRecyclerView) {

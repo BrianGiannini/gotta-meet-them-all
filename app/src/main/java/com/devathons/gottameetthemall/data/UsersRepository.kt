@@ -1,16 +1,10 @@
 package com.devathons.gottameetthemall.data
 
-// Replace by class and use independence injection
+// Replace object by class and use independence injection
 object UsersRepository {
+    private val knownUsers = mutableListOf<User?>()
 
-    private val initialKnownUsers = listOf(User("Ron", "Weasley", "Wizard", "Il est roux"))
-
-    private val knownUsers = initialKnownUsers.toMutableList()
-
-    val users: List<User?>
-        get() {
-            return knownUsers.completeWithNulls(TOTAL_OF_USERS)
-        }
+    val users: List<User?> get() = knownUsers.completeWithNulls(TOTAL_OF_USERS)
 
     fun addNewUser(user: User) {
         if (!knownUsers.contains(user)) knownUsers.add(user)
