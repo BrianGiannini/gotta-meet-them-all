@@ -8,6 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.devathons.gottameetthemall.R
 import com.devathons.gottameetthemall.databinding.FragmentProfileBinding
+import com.google.zxing.BarcodeFormat
+import com.journeyapps.barcodescanner.BarcodeEncoder
+import timber.log.Timber
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
@@ -34,7 +37,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         viewModel = ViewModelProvider(this)[ProfileViewModel::class.java]
 
         binding.picture.setOnClickListener {
-            viewModel.display()
+            viewModel.getProfile()
         }
 
         binding.saveProfileButton.setOnClickListener {
@@ -44,9 +47,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 binding.job.text.toString(),
                 binding.description.text.toString()
             )
+
+            binding.qrcode.setImageBitmap(viewModel.generateQrCode())
         }
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

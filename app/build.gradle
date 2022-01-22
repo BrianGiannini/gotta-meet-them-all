@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'androidx.navigation.safeargs'
+    id 'org.jetbrains.kotlin.android.extensions'
 }
 
 android {
@@ -9,6 +10,13 @@ android {
 
     buildFeatures {
         viewBinding = true
+    }
+
+    //used for parcelize extension
+    android {
+        androidExtensions {
+            experimental = true
+        }
     }
 
     defaultConfig {
@@ -74,5 +82,8 @@ dependencies {
     implementation "androidx.camera:camera-lifecycle:$camerax_version"
     // CameraX View class
     implementation "androidx.camera:camera-view:1.0.0-alpha32"
+
+    // QrCode generator
+    implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
 
 }

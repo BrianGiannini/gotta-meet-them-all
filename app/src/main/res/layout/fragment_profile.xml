@@ -18,7 +18,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/first_name"
-        android:textSize="35sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/picture"
         app:layout_constraintTop_toTopOf="parent" />
@@ -28,7 +28,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/name"
-        android:textSize="35sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/picture"
         app:layout_constraintTop_toBottomOf="@+id/first_name" />
@@ -38,7 +38,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/job"
-        android:textSize="35sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/picture"
         app:layout_constraintTop_toBottomOf="@+id/last_name" />
@@ -50,11 +50,19 @@
         android:layout_margin="20dp"
         android:gravity="center|top"
         android:hint="@string/description"
-        android:textSize="35sp"
-        app:layout_constraintBottom_toTopOf="@+id/save_profile_button"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/qrcode"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/job" />
+
+    <ImageView
+        android:id="@+id/qrcode"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        app:layout_constraintBottom_toTopOf="@+id/save_profile_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/save_profile_button"
