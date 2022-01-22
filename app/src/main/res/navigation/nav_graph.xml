@@ -6,7 +6,7 @@
     app:startDestination="@id/dashboardFragment">
     <fragment
         android:id="@+id/dashboardFragment"
-        android:name="com.devathons.gottameetthemall.DashboardFragment"
+        android:name="com.devathons.gottameetthemall.dashboard.DashboardFragment"
         android:label="fragment_dashboard"
         tools:layout="@layout/fragment_dashboard" />
 </navigation>
