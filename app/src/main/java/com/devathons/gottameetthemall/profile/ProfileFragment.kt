@@ -51,9 +51,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
 
         binding.picture.setOnClickListener {
-            val user = User("Brian", "Giannini")
-            val action = ScanFragmentDirections.actionScanFragmentToProfileFragment(user)
-            findNavController().navigate(action)
+
         }
 
         binding.saveProfileButton.setOnClickListener {
