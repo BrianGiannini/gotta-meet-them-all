@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import com.devathons.gottameetthemall.data.ProfileRepository
+import com.devathons.gottameetthemall.data.qrCodeData
 import timber.log.Timber
 
 class ProfileViewModel : ViewModel() {
@@ -16,7 +17,7 @@ class ProfileViewModel : ViewModel() {
 
     fun generateQrCode(): Bitmap {
         return barcodeEncoder.encodeBitmap(
-            userRepo.user.qrCode,
+            userRepo.user.qrCodeData,
             BarcodeFormat.QR_CODE,
             512,
             512
