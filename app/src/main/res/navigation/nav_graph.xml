@@ -19,9 +19,11 @@
         android:name="com.devathons.gottameetthemall.profile.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
-        <argument
-            android:name="user"
-            app:argType="com.devathons.gottameetthemall.data.User" />
+    <argument
+        android:name="user"
+        app:nullable="true"
+        android:defaultValue="@null"
+        app:argType="com.devathons.gottameetthemall.data.User" />
     </fragment>
 
     <fragment
@@ -32,6 +34,7 @@
         <action
             android:id="@+id/action_scanFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+
     </fragment>
 
 </navigation>

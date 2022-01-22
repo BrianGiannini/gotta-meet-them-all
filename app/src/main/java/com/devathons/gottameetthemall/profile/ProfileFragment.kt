@@ -6,11 +6,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.devathons.gottameetthemall.R
 import com.devathons.gottameetthemall.data.User
 import com.devathons.gottameetthemall.databinding.FragmentProfileBinding
+import com.devathons.gottameetthemall.scan.ScanFragmentDirections
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
@@ -37,14 +40,20 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         viewModel = ViewModelProvider(this)[ProfileViewModel::class.java]
 
         val args = retrieveArguments()
+        val user = args.user
 
-        val user: User by lazy { arguments?.getParcelable("user") as User }
-
-        if (user != null) initProfileValue(user)
-        else initProfileValue(viewModel.getProfile())
+        if (user != null) {
+            initProfileValue(user)
+            preventEdition()
+        } else {
+            initProfileValue(viewModel.getProfile())
+            resumeEdition()
+        }
 
         binding.picture.setOnClickListener {
-            viewModel.getProfile()
+            val user = User("Brian", "Giannini")
+            val action = ScanFragmentDirections.actionScanFragmentToProfileFragment(user)
+            findNavController().navigate(action)
         }
 
         binding.saveProfileButton.setOnClickListener {
@@ -57,6 +66,22 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
             binding.qrcode.setImageBitmap(viewModel.generateQrCode())
         }
+    }
+
+    private fun resumeEdition() {
+        binding.firstName.isEnabled = true
+        binding.lastName.isEnabled = true
+        binding.job.isEnabled = true
+        binding.description.isEnabled = true
+        binding.saveProfileButton.isVisible = true
+    }
+
+    private fun preventEdition() {
+        binding.firstName.isEnabled = false
+        binding.lastName.isEnabled = false
+        binding.job.isEnabled = false
+        binding.description.isEnabled = false
+        binding.saveProfileButton.isVisible = false
     }
 
     private fun initProfileValue(user: User) {
