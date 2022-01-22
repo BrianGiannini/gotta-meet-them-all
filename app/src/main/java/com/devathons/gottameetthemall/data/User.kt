@@ -11,5 +11,5 @@ data class User(
     val description: String? = null,
 ) : Parcelable
 
-val User.qrCodeData: String get() = firstName
+//val User.qrCodeData: String get() = toString()
 

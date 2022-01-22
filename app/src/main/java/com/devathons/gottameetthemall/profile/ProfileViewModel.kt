@@ -6,6 +6,7 @@ import com.devathons.gottameetthemall.data.ProfileRepository
 import com.devathons.gottameetthemall.data.qrCodeData
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
+import com.devathons.gottameetthemall.data.User
 
 class ProfileViewModel : ViewModel() {
     private val barcodeEncoder = BarcodeEncoder()
@@ -23,5 +24,9 @@ class ProfileViewModel : ViewModel() {
 
     fun saveProfile(firstName: String, lastName: String, job: String, description: String) {
         ProfileRepository.updateUser(firstName, lastName, job, description)
+    }
+
+    fun displayUser(user: User) {
+
     }
 }
