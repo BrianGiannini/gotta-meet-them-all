@@ -33,8 +33,17 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[ProfileViewModel::class.java]
 
-        binding.saveProfileButton.setOnClickListener {
+        binding.picture.setOnClickListener {
             viewModel.display()
+        }
+
+        binding.saveProfileButton.setOnClickListener {
+            viewModel.saveProfile(
+                binding.firstName.text.toString(),
+                binding.lastName.text.toString(),
+                binding.job.text.toString(),
+                binding.description.text.toString()
+            )
         }
     }
 
