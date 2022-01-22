@@ -62,5 +62,10 @@ dependencies {
     // Timber
     implementation 'com.jakewharton.timber:timber:5.0.1'
 
+    // Ml kit Scanner
+    implementation 'com.google.mlkit:barcode-scanning:17.0.1'
+
+    // Use this dependency to use the dynamically downloaded model in Google Play Services
+    implementation 'com.google.android.gms:play-services-mlkit-barcode-scanning:17.0.0'
 
 }
