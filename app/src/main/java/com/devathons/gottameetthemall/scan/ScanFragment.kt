@@ -10,18 +10,25 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.devathons.gottameetthemall.R
+import com.devathons.gottameetthemall.data.User
 import com.devathons.gottameetthemall.databinding.FragmentScanBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import timber.log.Timber
+import kotlin.coroutines.CoroutineContext
 
-class ScanFragment : Fragment(R.layout.fragment_scan) {
+class ScanFragment : Fragment(R.layout.fragment_scan), CoroutineScope {
 
     private lateinit var viewModel: ScanViewModel
     private lateinit var binding: FragmentScanBinding
-    private val args: ScanFragmentArgs by navArgs()
+
+    private val job = SupervisorJob()
+    override val coroutineContext: CoroutineContext = job + Dispatchers.Main
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,14 +53,24 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        viewModel.qrCodeData.collect {
-//
-//        }
+        listenToQrCodeData()
+
     }
 
-    fun navigateToUser(qrCodeContent: String) {
-        val action = ScanFragmentDirections.actionScanFragmentToProfileFragment()
-        findNavController().navigate(action)
+    private fun listenToQrCodeData() {
+
+        launch {
+            viewModel.qrCodeData.collect { userRaw ->
+                if (userRaw.data != "") {
+                    Timber.d("userRam $userRaw")
+                    val user = User("Brian")
+                    val action = ScanFragmentDirections.actionScanFragmentToProfileFragment(user)
+                    findNavController().navigate(action)
+                }
+            }
+        }
+
+
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {

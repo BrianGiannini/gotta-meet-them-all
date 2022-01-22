@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/dashboardFragment">
+    app:startDestination="@id/scanFragment">
     <fragment
         android:id="@+id/dashboardFragment"
         android:name="com.devathons.gottameetthemall.dashboard.DashboardFragment"
@@ -14,7 +14,11 @@
         android:id="@+id/profileFragment"
         android:name="com.devathons.gottameetthemall.profile.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <argument
+            android:name="user"
+            app:argType="com.devathons.gottameetthemall.data.User" />
+    </fragment>
 
     <fragment
         android:id="@+id/scanFragment"
@@ -24,9 +28,6 @@
         <action
             android:id="@+id/action_scanFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
-        <argument
-            android:name="user"
-            app:argType="com.devathons.gottameetthemall.data.User" />
     </fragment>
 
 </navigation>

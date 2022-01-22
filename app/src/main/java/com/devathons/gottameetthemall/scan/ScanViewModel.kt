@@ -19,6 +19,7 @@ import timber.log.Timber
 class ScanViewModel : ViewModel() {
 
     data class QrData(val data: String = "")
+    var isScanned = false
 
     private val _qrCodeData = MutableStateFlow<QrData>(QrData(""))
     val qrCodeData: StateFlow<QrData> = _qrCodeData
@@ -53,8 +54,11 @@ class ScanViewModel : ViewModel() {
                 it.setAnalyzer(executor, QrCodeAnalyzer { qrCodes ->
                     qrCodes?.forEach { barcode ->
                         barcode.rawValue?.let { data ->
-                            _qrCodeData.value = QrData(data)
-                        Timber.d("QR Code detected: $data")
+                            if (!isScanned && data != "") {
+                                isScanned = true
+                                _qrCodeData.value = QrData(data)
+                                Timber.d("QR Code detected: $data")
+                            }
                         }
                     }
                 })

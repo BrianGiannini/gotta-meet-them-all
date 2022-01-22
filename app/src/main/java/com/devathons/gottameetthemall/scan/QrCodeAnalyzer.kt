@@ -21,41 +21,6 @@ class QrCodeAnalyzer(
     private val onQrCodesDetected: (qrCodes: List<Barcode>?) -> Unit
 ) : ImageAnalysis.Analyzer {
 
-    private val ORIENTATIONS = SparseIntArray()
-
-    init {
-        ORIENTATIONS.append(Surface.ROTATION_0, 0)
-        ORIENTATIONS.append(Surface.ROTATION_90, 90)
-        ORIENTATIONS.append(Surface.ROTATION_180, 180)
-        ORIENTATIONS.append(Surface.ROTATION_270, 270)
-    }
-
-    /**
-     * Get the angle by which an image must be rotated given the device's current
-     * orientation.
-     */
-    @Throws(CameraAccessException::class)
-    private fun getRotationCompensation(cameraId: String, activity: Activity, isFrontFacing: Boolean): Int {
-        // Get the device's current rotation relative to its "native" orientation.
-        // Then, from the ORIENTATIONS table, look up the angle the image must be
-        // rotated to compensate for the device's rotation.
-        val deviceRotation = activity.windowManager.defaultDisplay.rotation
-        var rotationCompensation = ORIENTATIONS.get(deviceRotation)
-
-        // Get the device's sensor orientation.
-        val cameraManager = activity.getSystemService(CAMERA_SERVICE) as CameraManager
-        val sensorOrientation = cameraManager
-            .getCameraCharacteristics(cameraId)
-            .get(CameraCharacteristics.SENSOR_ORIENTATION)!!
-
-        rotationCompensation = if (isFrontFacing) {
-            (sensorOrientation + rotationCompensation) % 360
-        } else { // back-facing
-            (sensorOrientation - rotationCompensation + 360) % 360
-        }
-        return rotationCompensation
-    }
-
     @SuppressLint("UnsafeOptInUsageError")
     override fun analyze(image: ImageProxy) {
         image.image?.let {
@@ -71,7 +36,6 @@ class QrCodeAnalyzer(
                     barcodes.result.forEach { barcode ->
                         val bounds = barcode.boundingBox
                         val corners = barcode.cornerPoints
-
                         val rawValue = barcode.rawValue
                     }
                     onQrCodesDetected(barcodes.result)
