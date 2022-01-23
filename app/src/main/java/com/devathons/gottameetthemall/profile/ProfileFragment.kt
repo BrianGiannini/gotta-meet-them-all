@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.devathons.gottameetthemall.R
 import com.devathons.gottameetthemall.data.User
 import com.devathons.gottameetthemall.databinding.FragmentProfileBinding
+import timber.log.Timber
 import java.util.*
 
 class ProfileFragment : Fragment(R.layout.fragment_profile), TextToSpeech.OnInitListener {
@@ -46,29 +47,20 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), TextToSpeech.OnInit
         val args = retrieveArguments()
         val user = args.user
 
-        with(binding) {
-            firstName.text.toString()
-        }
-
         if (user != null) {
             initProfileValue(user)
             userSpeech = user
             preventEdition()
-
         } else {
             Glide.with(this).load(R.drawable.portrait_placeholder).into(binding.picture)
             viewModel.profile?.let { initProfileValue(it) }
             resumeEdition()
         }
 
-
         binding.picture.setOnClickListener {
-            speakOut(
-                binding.firstName.text.toString(),
-                binding.lastName.text.toString(),
-                binding.job.text.toString(),
-                binding.description.text.toString()
-            )
+            if (user?.firstName != null) {
+                speakOut(userSpeech)
+            }
         }
 
         binding.saveProfileButton.setOnClickListener {
@@ -119,32 +111,25 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), TextToSpeech.OnInit
     override fun onInit(status: Int) {
         if (status == TextToSpeech.SUCCESS) {
             // set US English as language for tts
-            val result = tts.setLanguage(Locale.FRANCE)
+            val result = tts.setLanguage(Locale.ENGLISH)
 
-            Log.d("TTS", "TTS succesfully initiallised")
+            Timber.d( "TTS succesfully initiallised")
 
             if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                Log.e("TTS", "The Language specified is not supported!")
+                Timber.e("The Language specified is not supported!")
             }
 
             if (userSpeech.firstName != "") {
-                speakOut(
-                    binding.firstName.text.toString(),
-                    binding.lastName.text.toString(),
-                    binding.job.text.toString(),
-                    binding.description.text.toString()
-                )
+                speakOut(userSpeech)
             }
-
         } else {
             Log.e("TTS", "Initilization Failed!")
         }
     }
 
-    private fun speakOut(firstName: String, lastName: String, job: String, notes: String) {
-        Log.d("TTS", "play TTS")
-
-        val text = "$firstName $lastName, $job. $notes"
+    private fun speakOut(user: User) {
+        Timber.d("play TTS")
+        val text = "${user.firstName} ${user.lastName}, ${user.job}. ${user.description}."
         tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "")
     }
 

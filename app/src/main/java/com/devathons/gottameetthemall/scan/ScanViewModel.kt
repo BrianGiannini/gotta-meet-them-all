@@ -28,12 +28,12 @@ class ScanViewModel : ViewModel(), CoroutineScope {
     private val job = SupervisorJob()
     override val coroutineContext: CoroutineContext = job + Dispatchers.Main
 
-    var isScanned = false
-
-    private val channelData = Channel<User>()
-    val qrCodeData: Flow<User> = channelData.receiveAsFlow()
+    private val _channelQrData = Channel<User>()
+    val channelQrData: Flow<User> = _channelQrData.receiveAsFlow()
 
     private var gson = Gson()
+    private var isScanned = false
+
 
     fun startCamera(context: Context, surfaceProvider: Preview.SurfaceProvider, lifecycleOwner: LifecycleOwner) {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
@@ -72,13 +72,13 @@ class ScanViewModel : ViewModel(), CoroutineScope {
                                         val user = gson.fromJson(data, User::class.java)
                                         if (user != null) {
                                             isScanned = true
-                                        }
-                                        UsersRepository.addNewUser(user)
-                                        launch {
-                                            channelData.send(user)
+                                            UsersRepository.addNewUser(user)
+                                            launch {
+                                                _channelQrData.send(user)
+                                            }
                                         }
                                     } catch (e: Exception) {
-                                        Timber.d("Not a valid QR Cede", e)
+                                        Timber.d("Not a valid QR Code", e)
                                     }
                                 }
                             }

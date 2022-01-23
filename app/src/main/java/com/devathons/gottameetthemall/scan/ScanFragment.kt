@@ -56,12 +56,11 @@ class ScanFragment : Fragment(R.layout.fragment_scan), CoroutineScope {
 
     private fun listenToQrCodeData() {
         launch {
-            viewModel.qrCodeData.collect { user ->
+            viewModel.channelQrData.collect { user ->
                 val action = ScanFragmentDirections.actionScanFragmentToProfileFragment(user)
                 findNavController().navigate(action)
             }
         }
-
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
