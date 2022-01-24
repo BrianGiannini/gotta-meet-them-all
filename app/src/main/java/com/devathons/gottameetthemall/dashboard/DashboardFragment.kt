@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.devathons.gottameetthemall.databinding.FragmentDashboardBinding
+import kotlinx.android.synthetic.main.fragment_dashboard.*
 
 class DashboardFragment : Fragment() {
     private val viewBinding by lazy { FragmentDashboardBinding.inflate(layoutInflater) }
@@ -23,11 +24,12 @@ class DashboardFragment : Fragment() {
             editMyProfile()
             return
         }
-
-        viewBinding.displayQrCodeButton.setOnClickListener { QrCodeDialogFragment().show(parentFragmentManager, null) }
-        viewBinding.editProfileButton.setOnClickListener { editMyProfile() }
-        viewBinding.profileName.text = "${currentUser.firstName} ${currentUser.lastName}"
-        viewBinding.profileJob.text = currentUser.job
+        with(viewBinding) {
+            displayQrCodeButton.setOnClickListener { QrCodeDialogFragment().show(parentFragmentManager, null) }
+            profileImage.setOnClickListener { editMyProfile() }
+            profileName.text = "${currentUser.firstName} ${currentUser.lastName}"
+            profileJob.text = currentUser.job
+        }
 
         val users = viewModel.users
         val discovered = users.count { it != null }

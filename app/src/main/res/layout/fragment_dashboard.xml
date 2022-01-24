@@ -24,12 +24,14 @@
 
         <TextView
             android:id="@+id/profile_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
+            android:singleLine="true"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/display_qr_code_button"
             app:layout_constraintStart_toEndOf="@id/profile_image"
             app:layout_constraintTop_toTopOf="@id/profile_image"
             tools:text="Hermione Granger" />
@@ -39,24 +41,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
             android:textColor="@color/black"
             android:textSize="20sp"
+            android:singleLine="true"
             app:layout_constraintBottom_toBottomOf="@+id/profile_image"
+            app:layout_constraintEnd_toStartOf="@+id/display_qr_code_button"
             app:layout_constraintStart_toEndOf="@id/profile_image"
             tools:text="Wizard" />
-
-        <ImageButton
-            android:id="@+id/edit_profile_button"
-            android:layout_width="30dp"
-            android:layout_height="35dp"
-            app:tint="@color/black"
-            android:layout_marginStart="5dp"
-            android:scaleType="centerCrop"
-            app:layout_constraintStart_toEndOf="@id/profile_name"
-            android:src="@drawable/ic_baseline_edit_24"
-            app:layout_constraintBottom_toBottomOf="@+id/profile_name"
-            app:layout_constraintTop_toTopOf="@+id/profile_name" />
 
         <ImageButton
             android:id="@+id/display_qr_code_button"
