@@ -118,6 +118,7 @@
         android:layout_marginBottom="20dp"
         android:text="@string/save"
         android:textSize="30sp"
+        android:enabled="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
