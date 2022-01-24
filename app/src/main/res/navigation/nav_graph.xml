@@ -44,6 +44,7 @@
         tools:layout="@layout/fragment_scan" >
         <action
             android:id="@+id/action_scanFragment_to_profileFragment"
+            app:popUpTo="@id/dashboardFragment"
             app:destination="@id/profileFragment">
 
             <argument
