@@ -1,13 +1,13 @@
 package com.devathons.gottameetthemall.data
 
-// Replace object by class and use independence injection
-object UsersRepository {
-    private val knownUsers = mutableListOf<User?>()
+class UsersRepository(private val userDao: UserDao) {
+
+    private val knownUsers:MutableList<User?> = userDao.getKnownUsers()
 
     val users: List<User?> get() = knownUsers.completeWithNulls(TOTAL_OF_USERS)
 
     fun addNewUser(user: User) {
-        if (!knownUsers.contains(user)) knownUsers.add(user)
+        userDao.insertUser(user)
     }
 
     private fun <T> List<T>.completeWithNulls(totalOfElements: Int): List<T?> {
@@ -19,6 +19,8 @@ object UsersRepository {
         return newList
     }
 
-    private const val TOTAL_OF_USERS = 10
+    companion object {
+        private const val TOTAL_OF_USERS = 10
+    }
 }
 

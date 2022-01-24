@@ -31,7 +31,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), TextToSpeech.OnInit
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    var userSpeech: User = User("")
+    var userSpeech: User = User("", "")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

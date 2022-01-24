@@ -6,16 +6,39 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.devathons.gottameetthemall.MyApplication
+import com.devathons.gottameetthemall.data.AppDatabase
+import com.devathons.gottameetthemall.data.ProfileRepository
+import com.devathons.gottameetthemall.data.UsersRepository
 import com.devathons.gottameetthemall.databinding.FragmentDashboardBinding
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 
 class DashboardFragment : Fragment() {
+    private val application: MyApplication = MyApplication()
     private val viewBinding by lazy { FragmentDashboardBinding.inflate(layoutInflater) }
-    private val viewModel by lazy { ViewModelProvider(this)[DashboardViewModel::class.java] }
+    //private val viewModel by lazy { ViewModelProvider(this)[DashboardViewModel::class.java] }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View = viewBinding.root
+    private val usersRepository: UsersRepository by lazy {
+        UsersRepository(application.database!!.userDao())
+    }
+
+    private val profileRepository: ProfileRepository by lazy {
+        ProfileRepository(application.database!!.userDao())
+    }
+
+    private val viewModel: DashboardViewModel by lazy {
+        val factory = DashboardViewModel.Factory(usersRepository, profileRepository)
+        ViewModelProviders.of(this, factory)[DashboardViewModel::class.java]
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View = viewBinding.root
 
     override fun onResume() {
         super.onResume()

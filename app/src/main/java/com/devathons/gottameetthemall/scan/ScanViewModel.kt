@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
-class ScanViewModel : ViewModel(), CoroutineScope {
+class ScanViewModel(private val usersRepository: UsersRepository) : ViewModel(), CoroutineScope {
 
     private val job = SupervisorJob()
     override val coroutineContext: CoroutineContext = job + Dispatchers.Main
@@ -72,7 +72,7 @@ class ScanViewModel : ViewModel(), CoroutineScope {
                                         val user = gson.fromJson(data, User::class.java)
                                         if (user != null) {
                                             isScanned = true
-                                            UsersRepository.addNewUser(user)
+                                            usersRepository.addNewUser(user)
                                             launch {
                                                 _channelQrData.send(user)
                                             }
