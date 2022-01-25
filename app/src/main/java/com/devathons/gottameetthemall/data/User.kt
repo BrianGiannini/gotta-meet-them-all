@@ -23,6 +23,7 @@ data class User(
             lastName = lastName,
             job = job,
             description = description,
+            picture = picture,
             isCurrent = false
         )
     }
