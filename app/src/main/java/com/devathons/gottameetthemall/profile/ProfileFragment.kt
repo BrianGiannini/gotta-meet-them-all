@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -60,7 +59,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), TextToSpeech.OnInit
             preventEdition()
         } else {
             Glide.with(this).load(R.drawable.portrait_placeholder).into(binding.picture)
-            viewModel.profile?.let { initProfileValue(it) }
+            viewModel.getCurrentUser()?.let { initProfileValue(it) }
             resumeEdition()
         }
 

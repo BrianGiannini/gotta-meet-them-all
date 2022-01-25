@@ -1,19 +1,13 @@
 package com.devathons.gottameetthemall.data
 
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-
 class UsersRepository(private val userDao: UserDao) {
 
-    val users: List<User?> get() = getKnownUsers().completeWithNulls(TOTAL_OF_USERS)
+    suspend fun getAllUsers(): List<User?> = getKnownUsers().completeWithNulls(TOTAL_OF_USERS)
 
-    fun getKnownUsers():MutableList<User?> = runBlocking { userDao.getKnownUsers() }
+    suspend fun getKnownUsers(): MutableList<User?> = userDao.getKnownUsers()
 
-    fun addNewUser(user: User) {
-        GlobalScope.launch {
-            userDao.insertUser(user)
-        }
+    suspend fun addNewUser(user: User) {
+        userDao.insertUser(user)
     }
 
     private fun <T> List<T>.completeWithNulls(totalOfElements: Int): List<T?> {

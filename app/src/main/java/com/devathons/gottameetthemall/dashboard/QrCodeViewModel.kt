@@ -2,23 +2,36 @@ package com.devathons.gottameetthemall.dashboard
 
 import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.devathons.gottameetthemall.BaseViewModel
 import com.devathons.gottameetthemall.data.ProfileRepository
+import com.devathons.gottameetthemall.profile.ProfileViewModel
 import com.google.gson.Gson
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
+import kotlinx.coroutines.runBlocking
 
-class QrCodeViewModel(private val profileRepository: ProfileRepository) : ViewModel() {
+class QrCodeViewModel(private val profileRepository: ProfileRepository) : BaseViewModel() {
 
     private val barcodeEncoder = BarcodeEncoder()
     private var gson = Gson()
 
-    val qrCode: Bitmap?
-        get() = profileRepository.getCurrentUser()?.let {
-            barcodeEncoder.encodeBitmap(
-                gson.toJson(profileRepository.getCurrentUser()?.generateQRCode()),
-                BarcodeFormat.QR_CODE,
-                512,
-                512
-            )
+    fun qrCode(): Bitmap? =
+        runBlocking {
+            profileRepository.getCurrentUser()?.let {
+                barcodeEncoder.encodeBitmap(
+                    gson.toJson(profileRepository.getCurrentUser()?.generateQRCode()),
+                    BarcodeFormat.QR_CODE,
+                    512,
+                    512
+                )
+            }
         }
+
+    @Suppress("UNCHECKED_CAST")
+    class Factory(private val profileRepository: ProfileRepository) : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            return QrCodeViewModel(profileRepository) as T
+        }
+    }
 }

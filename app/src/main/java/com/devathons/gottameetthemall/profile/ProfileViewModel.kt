@@ -2,23 +2,28 @@ package com.devathons.gottameetthemall.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.devathons.gottameetthemall.BaseViewModel
 import com.devathons.gottameetthemall.data.ProfileRepository
 import com.devathons.gottameetthemall.data.User
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
-class ProfileViewModel(private val profileRepository: ProfileRepository) : ViewModel() {
+class ProfileViewModel(private val profileRepository: ProfileRepository) : BaseViewModel() {
 
-    val profile get() = profileRepository.getCurrentUser()
+    fun getCurrentUser(): User? = runBlocking { profileRepository.getCurrentUser() }
 
     fun saveProfile(firstName: String, lastName: String, job: String, description: String) {
-        profileRepository.updateProfile(
-            User(
-                firstName = firstName,
-                lastName = lastName,
-                job = job,
-                description = description,
-                isCurrent = true
+        launch {
+            profileRepository.updateProfile(
+                User(
+                    firstName = firstName,
+                    lastName = lastName,
+                    job = job,
+                    description = description,
+                    isCurrent = true
+                )
             )
-        )
+        }
     }
 
     @Suppress("UNCHECKED_CAST")

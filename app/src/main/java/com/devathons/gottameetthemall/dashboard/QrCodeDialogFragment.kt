@@ -6,12 +6,17 @@ import android.os.Bundle
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
+import com.devathons.gottameetthemall.MyApplication
 import com.devathons.gottameetthemall.databinding.DialogQrCodeBinding
 
 class QrCodeDialogFragment : DialogFragment() {
 
     private val viewBinding by lazy { DialogQrCodeBinding.inflate(layoutInflater) }
-    private val viewModel by lazy { ViewModelProvider(this)[QrCodeViewModel::class.java] }
+
+    private val viewModel: QrCodeViewModel by lazy {
+        val factory = QrCodeViewModel.Factory((activity?.application as MyApplication).profileRepository)
+        ViewModelProvider(this, factory)[QrCodeViewModel::class.java]
+    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
@@ -20,7 +25,7 @@ class QrCodeDialogFragment : DialogFragment() {
 
             val dialog = builder.create()
             dialog.setOnShowListener {
-                viewModel.qrCode?.let { viewBinding.qrcode.setImageBitmap(viewModel.qrCode) }
+                viewModel.qrCode()?.let { viewBinding.qrcode.setImageBitmap(viewModel.qrCode()) }
                 viewBinding.progress.isVisible = false
             }
 

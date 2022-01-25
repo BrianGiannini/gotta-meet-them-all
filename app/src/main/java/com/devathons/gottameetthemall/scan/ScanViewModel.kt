@@ -11,23 +11,17 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.devathons.gottameetthemall.BaseViewModel
 import com.devathons.gottameetthemall.data.User
 import com.devathons.gottameetthemall.data.UsersRepository
 import com.google.gson.Gson
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import kotlin.coroutines.CoroutineContext
 
-class ScanViewModel(private val usersRepository: UsersRepository) : ViewModel(), CoroutineScope {
-
-    private val job = SupervisorJob()
-    override val coroutineContext: CoroutineContext = job + Dispatchers.Main
+class ScanViewModel(private val usersRepository: UsersRepository) : BaseViewModel() {
 
     private val _channelQrData = Channel<User>()
     val channelQrData: Flow<User> = _channelQrData.receiveAsFlow()
@@ -73,8 +67,8 @@ class ScanViewModel(private val usersRepository: UsersRepository) : ViewModel(),
                                         val user = gson.fromJson(data, User::class.java)
                                         if (user != null) {
                                             isScanned = true
-                                            usersRepository.addNewUser(user)
                                             launch {
+                                                usersRepository.addNewUser(user)
                                                 _channelQrData.send(user)
                                             }
                                         }
