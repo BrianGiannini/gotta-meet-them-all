@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.devathons.gottameetthemall.MyApplication
 import com.devathons.gottameetthemall.R
 import com.devathons.gottameetthemall.databinding.FragmentScanBinding
 import kotlinx.coroutines.CoroutineScope
@@ -22,18 +23,21 @@ import kotlin.coroutines.CoroutineContext
 
 class ScanFragment : Fragment(R.layout.fragment_scan), CoroutineScope {
 
-    private lateinit var viewModel: ScanViewModel
     private lateinit var binding: FragmentScanBinding
 
     private val job = SupervisorJob()
     override val coroutineContext: CoroutineContext = job + Dispatchers.Main
+
+    private val viewModel: ScanViewModel by lazy {
+        val factory = ScanViewModel.Factory((activity?.application as MyApplication).usersRepository)
+        ViewModelProvider(this, factory)[ScanViewModel::class.java]
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentScanBinding.inflate(layoutInflater)
-        viewModel = ViewModelProvider(this)[ScanViewModel::class.java]
 
         // Request camera permissions
         if (allPermissionsGranted()) {

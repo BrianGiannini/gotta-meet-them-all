@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.devathons.gottameetthemall.MyApplication
 import com.devathons.gottameetthemall.R
 import com.devathons.gottameetthemall.data.User
 import com.devathons.gottameetthemall.databinding.FragmentProfileBinding
@@ -23,7 +24,6 @@ import java.util.*
 
 class ProfileFragment : Fragment(R.layout.fragment_profile), TextToSpeech.OnInitListener {
 
-    private lateinit var viewModel: ProfileViewModel
     private lateinit var tts: TextToSpeech
 
     private var _binding: FragmentProfileBinding? = null
@@ -31,19 +31,23 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), TextToSpeech.OnInit
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    var userSpeech: User = User("")
+    var userSpeech: User = User("", "")
+
+    private val viewModel: ProfileViewModel by lazy {
+        val factory = ProfileViewModel.Factory((activity?.application as MyApplication).profileRepository)
+        ViewModelProvider(this, factory)[ProfileViewModel::class.java]
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[ProfileViewModel::class.java]
 
         tts = TextToSpeech(requireContext(), this)
 

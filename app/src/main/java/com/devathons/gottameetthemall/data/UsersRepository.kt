@@ -1,13 +1,19 @@
 package com.devathons.gottameetthemall.data
 
-// Replace object by class and use independence injection
-object UsersRepository {
-    private val knownUsers = mutableListOf<User?>()
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
-    val users: List<User?> get() = knownUsers.completeWithNulls(TOTAL_OF_USERS)
+class UsersRepository(private val userDao: UserDao) {
+
+    val users: List<User?> get() = getKnownUsers().completeWithNulls(TOTAL_OF_USERS)
+
+    fun getKnownUsers():MutableList<User?> = runBlocking { userDao.getKnownUsers() }
 
     fun addNewUser(user: User) {
-        if (!knownUsers.contains(user)) knownUsers.add(user)
+        GlobalScope.launch {
+            userDao.insertUser(user)
+        }
     }
 
     private fun <T> List<T>.completeWithNulls(totalOfElements: Int): List<T?> {
@@ -19,6 +25,8 @@ object UsersRepository {
         return newList
     }
 
-    private const val TOTAL_OF_USERS = 10
+    companion object {
+        private const val TOTAL_OF_USERS = 10
+    }
 }
 

@@ -10,6 +10,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.devathons.gottameetthemall.data.User
 import com.devathons.gottameetthemall.data.UsersRepository
 import com.google.gson.Gson
@@ -23,7 +24,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
-class ScanViewModel : ViewModel(), CoroutineScope {
+class ScanViewModel(private val usersRepository: UsersRepository) : ViewModel(), CoroutineScope {
 
     private val job = SupervisorJob()
     override val coroutineContext: CoroutineContext = job + Dispatchers.Main
@@ -72,7 +73,7 @@ class ScanViewModel : ViewModel(), CoroutineScope {
                                         val user = gson.fromJson(data, User::class.java)
                                         if (user != null) {
                                             isScanned = true
-                                            UsersRepository.addNewUser(user)
+                                            usersRepository.addNewUser(user)
                                             launch {
                                                 _channelQrData.send(user)
                                             }
@@ -111,4 +112,10 @@ class ScanViewModel : ViewModel(), CoroutineScope {
         }, ContextCompat.getMainExecutor(context))
     }
 
+    @Suppress("UNCHECKED_CAST")
+    class Factory(private val usersRepository: UsersRepository) : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            return ScanViewModel(usersRepository) as T
+        }
+    }
 }

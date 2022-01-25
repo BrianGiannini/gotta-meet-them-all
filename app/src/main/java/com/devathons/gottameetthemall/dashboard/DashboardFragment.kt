@@ -8,14 +8,25 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.devathons.gottameetthemall.MyApplication
 import com.devathons.gottameetthemall.databinding.FragmentDashboardBinding
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 
 class DashboardFragment : Fragment() {
     private val viewBinding by lazy { FragmentDashboardBinding.inflate(layoutInflater) }
-    private val viewModel by lazy { ViewModelProvider(this)[DashboardViewModel::class.java] }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View = viewBinding.root
+    private val viewModel: DashboardViewModel by lazy {
+        val application: MyApplication = (activity?.application as MyApplication)
+        val factory =
+            DashboardViewModel.Factory(application.profileRepository, application.usersRepository)
+        ViewModelProvider(this, factory)[DashboardViewModel::class.java]
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View = viewBinding.root
 
     override fun onResume() {
         super.onResume()
@@ -37,7 +48,7 @@ class DashboardFragment : Fragment() {
         viewBinding.score.text = "$discovered/$total users discovered:"
 
         val personsAdapter = UsersAdapter(users) { position ->
-            val user = users[position] ?: return@UsersAdapter
+            val user = users.get(position) ?: return@UsersAdapter
             val action = DashboardFragmentDirections.actionShowUserFromDashboard(user)
             findNavController().navigate(action)
         }
