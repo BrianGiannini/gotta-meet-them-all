@@ -70,17 +70,20 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), TextToSpeech.OnInit
             }
         }
 
-        binding.firstName.addTextChangedListener(object : TextWatcher {
-            override fun onTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-                binding.saveProfileButton.isEnabled = s.toString().trim().isNotEmpty()
-            }
+        if (binding.firstName.text.isEmpty()) {
+            binding.firstName.addTextChangedListener(object : TextWatcher {
+                override fun onTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                    binding.saveProfileButton.isEnabled = s.toString().trim().isNotEmpty()
+                }
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
+                override fun beforeTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                }
 
-            override fun afterTextChanged(s: Editable?) {
-            }
-        })
+                override fun afterTextChanged(s: Editable?) {
+                }
+            })
+        }
+
 
         binding.saveProfileButton.setOnClickListener {
             viewModel.saveProfile(
@@ -95,26 +98,34 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), TextToSpeech.OnInit
     }
 
     private fun resumeEdition() {
-        binding.firstName.isEnabled = true
-        binding.lastName.isEnabled = true
-        binding.job.isEnabled = true
-        binding.description.isEnabled = true
-        binding.saveProfileButton.isVisible = true
+        with(binding) {
+            firstName.isEnabled = firstName.text.isEmpty()
+            lastName.isEnabled = lastName.text.isEmpty()
+            job.isEnabled = true
+            description.isEnabled = true
+            saveProfileButton.isVisible = true
+            saveProfileButton.isEnabled = firstName.text.isNotEmpty()
+        }
     }
 
     private fun preventEdition() {
-        binding.firstName.isEnabled = false
-        binding.lastName.isEnabled = false
-        binding.job.isEnabled = false
-        binding.description.isEnabled = false
-        binding.saveProfileButton.isVisible = false
+        with(binding) {
+            firstName.isEnabled = false
+            lastName.isEnabled = false
+            job.isEnabled = false
+            description.isEnabled = false
+            saveProfileButton.isVisible = false
+        }
+
     }
 
     private fun initProfileValue(user: User) {
-        binding.firstName.setText(user.firstName)
-        binding.lastName.setText(user.lastName)
-        binding.job.setText(user.job)
-        binding.description.setText(user.description)
+        with(binding) {
+            firstName.setText(user.firstName)
+            lastName.setText(user.lastName)
+            job.setText(user.job)
+            description.setText(user.description)
+        }
     }
 
     private fun retrieveArguments(): ProfileFragmentArgs {
