@@ -15,7 +15,7 @@ class UsersAdapter(private val users: List<User?>, private val onItemClickListen
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = with(holder.viewBinding) {
-        val user = users[position]
+        val user = users.get(position)
         val context = root.context
         if (user == null) {
             nameTextView.setTextColor(Color.GRAY)

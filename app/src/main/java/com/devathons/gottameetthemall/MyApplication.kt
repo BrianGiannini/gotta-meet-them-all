@@ -10,17 +10,13 @@ class MyApplication : Application() {
 
     // Using by lazy so the database and the repository are only created when they're needed
     // rather than when the application starts
-    val database: AppDatabase? = null
-    val usersRepository: UsersRepository? = null
-    val profileRepository: ProfileRepository? = null
+    private val database by lazy { AppDatabase.getDatabase(this) }
+    val profileRepository by lazy { ProfileRepository(database.userDao()) }
+    val usersRepository by lazy { UsersRepository(database.userDao()) }
 
 
     override fun onCreate() {
         super.onCreate()
-
-        val database = AppDatabase.getDatabase(this)
-        val usersRepository = UsersRepository(database.userDao())
-        val profileRepository = ProfileRepository(database.userDao())
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())

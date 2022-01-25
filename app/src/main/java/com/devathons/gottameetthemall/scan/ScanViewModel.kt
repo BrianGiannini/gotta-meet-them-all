@@ -10,6 +10,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.devathons.gottameetthemall.data.User
 import com.devathons.gottameetthemall.data.UsersRepository
 import com.google.gson.Gson
@@ -111,4 +112,10 @@ class ScanViewModel(private val usersRepository: UsersRepository) : ViewModel(),
         }, ContextCompat.getMainExecutor(context))
     }
 
+    @Suppress("UNCHECKED_CAST")
+    class Factory(private val usersRepository: UsersRepository) : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            return ScanViewModel(usersRepository) as T
+        }
+    }
 }

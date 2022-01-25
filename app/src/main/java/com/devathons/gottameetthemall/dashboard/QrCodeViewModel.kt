@@ -13,9 +13,9 @@ class QrCodeViewModel(private val profileRepository: ProfileRepository) : ViewMo
     private var gson = Gson()
 
     val qrCode: Bitmap?
-        get() = profileRepository.user?.let {
+        get() = profileRepository.getCurrentUser()?.let {
             barcodeEncoder.encodeBitmap(
-                gson.toJson(profileRepository.user?.generateQRCode()),
+                gson.toJson(profileRepository.getCurrentUser()?.generateQRCode()),
                 BarcodeFormat.QR_CODE,
                 512,
                 512
