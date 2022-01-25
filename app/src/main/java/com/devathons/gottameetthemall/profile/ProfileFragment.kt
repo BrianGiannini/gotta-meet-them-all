@@ -58,7 +58,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), TextToSpeech.OnInit
             userSpeech = user
             preventEdition()
         } else {
-            Glide.with(this).load(R.drawable.portrait_placeholder).into(binding.picture)
             viewModel.getCurrentUser()?.let { initProfileValue(it) }
             resumeEdition()
         }
@@ -125,6 +124,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), TextToSpeech.OnInit
             job.setText(user.job)
             description.setText(user.description)
         }
+        Glide.with(this).load(user.picture).into(binding.picture)
     }
 
     private fun retrieveArguments(): ProfileFragmentArgs {

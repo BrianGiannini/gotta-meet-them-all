@@ -15,6 +15,7 @@
         android:layout_margin="10dp"
         app:civ_border_color="#FF000000"
         app:civ_border_width="2dp"
+        android:src="@drawable/portrait_placeholder"
         app:layout_constraintBottom_toBottomOf="@+id/job_text_input_layout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/first_name_text_input_layout" />
