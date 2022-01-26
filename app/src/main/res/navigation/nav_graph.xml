@@ -8,7 +8,7 @@
         android:id="@+id/dashboardFragment"
         android:name="com.devathons.gottameetthemall.dashboard.DashboardFragment"
         android:label="fragment_dashboard"
-        tools:layout="@layout/fragment_dashboard" >
+        tools:layout="@layout/fragment_dashboard">
         <action
             android:id="@+id/action_show_user_from_dashboard"
             app:destination="@id/profileFragment">
@@ -23,6 +23,9 @@
         <action
             android:id="@+id/action_dashboardFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_profileEditionFragment"
+            app:destination="@id/profileEditionFragment" />
     </fragment>
 
     <fragment
@@ -35,23 +38,37 @@
             android:defaultValue="@null"
             app:argType="com.devathons.gottameetthemall.data.User"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_profileFragment_to_profileEditionFragment"
+            app:destination="@id/profileEditionFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/scanFragment"
         android:name="com.devathons.gottameetthemall.scan.ScanFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_scan" >
+        tools:layout="@layout/fragment_scan">
         <action
             android:id="@+id/action_scanFragment_to_profileFragment"
-            app:popUpTo="@id/dashboardFragment"
-            app:destination="@id/profileFragment">
+            app:destination="@id/profileFragment"
+            app:popUpTo="@id/dashboardFragment">
 
             <argument
                 android:name="user"
                 app:argType="com.devathons.gottameetthemall.data.User" />
         </action>
 
+    </fragment>
+    <fragment
+        android:id="@+id/profileEditionFragment"
+        android:name="com.devathons.gottameetthemall.profileedition.ProfileEditionFragment"
+        android:label="fragment_profile_edition"
+        tools:layout="@layout/fragment_profile_edition">
+        <argument
+            android:name="user"
+            android:defaultValue="@null"
+            app:argType="com.devathons.gottameetthemall.data.User"
+            app:nullable="true" />
     </fragment>
 
 </navigation>

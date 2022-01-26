@@ -2,8 +2,6 @@ package com.devathons.gottameetthemall.profile
 
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +14,7 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.devathons.gottameetthemall.MyApplication
 import com.devathons.gottameetthemall.R
+import com.devathons.gottameetthemall.dashboard.DashboardFragmentDirections
 import com.devathons.gottameetthemall.data.User
 import com.devathons.gottameetthemall.databinding.FragmentProfileBinding
 import timber.log.Timber
@@ -33,7 +32,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), TextToSpeech.OnInit
     var userSpeech: User = User("", "")
 
     private val viewModel: ProfileViewModel by lazy {
-        val factory = ProfileViewModel.Factory((activity?.application as MyApplication).profileRepository)
+        val factory =
+            ProfileViewModel.Factory((activity?.application as MyApplication).profileRepository)
         ViewModelProvider(this, factory)[ProfileViewModel::class.java]
     }
 
@@ -45,21 +45,22 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), TextToSpeech.OnInit
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onResume() {
+        super.onResume()
+
 
         tts = TextToSpeech(requireContext(), this)
 
         val args = retrieveArguments()
-        val user = args.user
+        var user = args.user
 
-        if (user != null) {
+        if (user == null) {
+            user = viewModel.getCurrentUser()
+            binding.editProfileButton.isVisible = true
+        }
+        user?.let {
             initProfileValue(user)
             userSpeech = user
-            preventEdition()
-        } else {
-            viewModel.getCurrentUser()?.let { initProfileValue(it) }
-            resumeEdition()
         }
 
         binding.picture.setOnClickListener {
@@ -68,69 +69,18 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), TextToSpeech.OnInit
             }
         }
 
-        if (binding.firstName.text.isEmpty()) {
-            binding.firstName.addTextChangedListener(object : TextWatcher {
-                override fun onTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-                    binding.saveProfileButton.isEnabled = s.toString().trim().isNotEmpty()
-                }
-
-                override fun beforeTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                }
-
-                override fun afterTextChanged(s: Editable?) {
-                }
-            })
+        binding.editProfileButton.setOnClickListener {
+            val action = ProfileFragmentDirections.actionProfileFragmentToProfileEditionFragment()
+            findNavController().navigate(action)
         }
-
-
-        binding.saveProfileButton.setOnClickListener {
-            viewModel.saveProfile(
-                binding.firstName.text.toString(),
-                binding.lastName.text.toString(),
-                binding.job.text.toString(),
-                binding.description.text.toString()
-            )
-
-            findNavController().popBackStack()
-        }
-    }
-
-    private fun resumeEdition() {
-        with(binding) {
-            firstName.isEnabled = firstName.text.isEmpty()
-            lastName.isEnabled = lastName.text.isEmpty()
-            job.isEnabled = true
-            description.isEnabled = true
-            saveProfileButton.isVisible = true
-            saveProfileButton.isEnabled = firstName.text.isNotEmpty()
-        }
-    }
-
-    private fun preventEdition() {
-        with(binding) {
-            firstName.isEnabled = false
-            lastName.isEnabled = false
-            job.isEnabled = false
-            description.isEnabled = false
-            saveProfileButton.isVisible = false
-        }
-
     }
 
     private fun initProfileValue(user: User) {
         with(binding) {
-            firstNameTextInputLayout.isHintAnimationEnabled = false
-            lastNameTextInputLayout.isHintAnimationEnabled = false
-            jobTextInputLayout.isHintAnimationEnabled = false
-            descriptionTextInputLayout.isHintAnimationEnabled = false
-            firstName.setText(user.firstName)
-            lastName.setText(user.lastName)
-            job.setText(user.job)
-            description.setText(user.description)
-            firstNameTextInputLayout.isHintAnimationEnabled = true
-            lastNameTextInputLayout.isHintAnimationEnabled = true
-            jobTextInputLayout.isHintAnimationEnabled = true
-            descriptionTextInputLayout.isHintAnimationEnabled = true
+            firstName.text = user.firstName
+            lastName.text = user.lastName
+            job.text = user.job
+            description.text = user.description
         }
         Glide.with(this).load(user.picture).into(binding.picture)
     }
@@ -150,7 +100,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), TextToSpeech.OnInit
             // set US English as language for tts
             val result = tts.setLanguage(Locale.ENGLISH)
 
-            Timber.d( "TTS succesfully initiallised")
+            Timber.d("TTS succesfully initiallised")
 
             if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                 Timber.e("The Language specified is not supported!")

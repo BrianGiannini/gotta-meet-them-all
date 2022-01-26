@@ -13,113 +13,78 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_margin="10dp"
+        android:src="@drawable/portrait_placeholder"
         app:civ_border_color="#FF000000"
         app:civ_border_width="2dp"
-        android:src="@drawable/portrait_placeholder"
-        app:layout_constraintBottom_toBottomOf="@+id/job_text_input_layout"
+        app:layout_constraintBottom_toBottomOf="@+id/job"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/first_name_text_input_layout" />
+        app:layout_constraintTop_toTopOf="@+id/first_name" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/first_name_text_input_layout"
+    <TextView
+        android:id="@+id/first_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:background="@android:color/transparent"
-        android:hint="@string/first_name"
+        android:maxLength="30"
+        android:textColorHint="@color/light_gray"
+        android:textSize="20sp"
         app:boxBackgroundColor="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/picture"
-        app:layout_constraintTop_toTopOf="parent"
-        app:startIconDrawable="@drawable/ic_baseline_edit_24">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/first_name"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:inputType="textCapWords"
-            android:maxLength="30"
-            android:textColorHint="@color/light_gray"
-            android:textSize="20sp" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/last_name_text_input_layout"
+    <TextView
+        android:id="@+id/last_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:background="@android:color/transparent"
-        android:hint="@string/name"
+        android:maxLength="30"
+        android:textSize="20sp"
         app:boxBackgroundColor="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/picture"
-        app:layout_constraintTop_toBottomOf="@+id/first_name_text_input_layout"
-        app:startIconDrawable="@drawable/ic_baseline_edit_24">
-
-        <EditText
-            android:id="@+id/last_name"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:inputType="textCapWords"
-            android:maxLength="30"
-            android:textSize="20sp" />
-    </com.google.android.material.textfield.TextInputLayout>
+        app:layout_constraintTop_toBottomOf="@+id/first_name"
+        app:layout_constraintBottom_toTopOf="@id/job"/>
 
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/job_text_input_layout"
+    <TextView
+        android:id="@+id/job"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:background="@android:color/transparent"
-        android:hint="@string/job"
+        android:maxLength="30"
+        android:textSize="20sp"
         app:boxBackgroundColor="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/description"
         app:layout_constraintStart_toEndOf="@id/picture"
-        app:layout_constraintTop_toBottomOf="@+id/last_name_text_input_layout"
-        app:startIconDrawable="@drawable/ic_baseline_edit_24">
+        app:layout_constraintTop_toBottomOf="@+id/last_name" />
 
-        <EditText
-            android:id="@+id/job"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:inputType="textCapWords"
-            android:maxLength="30"
-            android:textSize="20sp" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/description_text_input_layout"
+    <TextView
+        android:id="@+id/description"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="20dp"
         android:background="@android:color/transparent"
         android:gravity="center|top"
-        android:hint="@string/description"
-        android:maxLength="200"
         android:textSize="20sp"
         app:boxBackgroundColor="@android:color/transparent"
-        app:layout_constraintBottom_toTopOf="@+id/save_profile_button"
+        app:layout_constraintBottom_toTopOf="@+id/edit_profile_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/job_text_input_layout">
-
-        <EditText
-            android:id="@+id/description"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center|top"
-            android:textSize="20sp" />
-    </com.google.android.material.textfield.TextInputLayout>
+        app:layout_constraintTop_toBottomOf="@+id/job" />
 
     <Button
-        android:id="@+id/save_profile_button"
+        android:id="@+id/edit_profile_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:text="@string/save"
+        android:visibility="gone"
+        android:text="@string/edit"
         android:textSize="30sp"
-        android:enabled="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.devathons.gottameetthemall.MyApplication
+import com.devathons.gottameetthemall.data.User
 import com.devathons.gottameetthemall.databinding.FragmentDashboardBinding
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 
@@ -33,12 +34,12 @@ class DashboardFragment : Fragment() {
         super.onResume()
         val currentUser = viewModel.currentUser
         if (currentUser == null) {
-            editMyProfile()
+            createMyProfile()
             return
         }
         with(viewBinding) {
             displayQrCodeButton.setOnClickListener { QrCodeDialogFragment().show(parentFragmentManager, null) }
-            profileImage.setOnClickListener { editMyProfile() }
+            profileImage.setOnClickListener { displayMyProfile() }
             profileName.text = "${currentUser.firstName} ${currentUser.lastName}"
             profileJob.text = currentUser.job
         }
@@ -65,7 +66,12 @@ class DashboardFragment : Fragment() {
         }
     }
 
-    private fun editMyProfile() {
+    private fun createMyProfile() {
+        val action = DashboardFragmentDirections.actionDashboardFragmentToProfileEditionFragment()
+        findNavController().navigate(action)
+    }
+
+    private fun displayMyProfile() {
         val action = DashboardFragmentDirections.actionDashboardFragmentToProfileFragment()
         findNavController().navigate(action)
     }
