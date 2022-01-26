@@ -111,6 +111,7 @@
         <EditText
             android:id="@+id/description"
             android:layout_width="match_parent"
+            android:inputType="textCapSentences"
             android:layout_height="match_parent"
             android:gravity="center|top"
             android:textSize="20sp" />
