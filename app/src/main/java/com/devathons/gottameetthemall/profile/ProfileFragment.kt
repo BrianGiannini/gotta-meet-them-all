@@ -119,10 +119,18 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), TextToSpeech.OnInit
 
     private fun initProfileValue(user: User) {
         with(binding) {
+            firstNameTextInputLayout.isHintAnimationEnabled = false
+            lastNameTextInputLayout.isHintAnimationEnabled = false
+            jobTextInputLayout.isHintAnimationEnabled = false
+            descriptionTextInputLayout.isHintAnimationEnabled = false
             firstName.setText(user.firstName)
             lastName.setText(user.lastName)
             job.setText(user.job)
             description.setText(user.description)
+            firstNameTextInputLayout.isHintAnimationEnabled = true
+            lastNameTextInputLayout.isHintAnimationEnabled = true
+            jobTextInputLayout.isHintAnimationEnabled = true
+            descriptionTextInputLayout.isHintAnimationEnabled = true
         }
         Glide.with(this).load(user.picture).into(binding.picture)
     }
