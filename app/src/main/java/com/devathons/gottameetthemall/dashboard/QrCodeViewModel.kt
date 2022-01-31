@@ -16,7 +16,7 @@ class QrCodeViewModel(private val profileRepository: ProfileRepository) : BaseVi
     private val barcodeEncoder = BarcodeEncoder()
     private var gson = Gson()
 
-    fun qrCode(): Bitmap? =
+    /*fun qrCode(): Bitmap? =
         runBlocking {
             profileRepository.getCurrentUser()?.let {
                 barcodeEncoder.encodeBitmap(
@@ -26,7 +26,7 @@ class QrCodeViewModel(private val profileRepository: ProfileRepository) : BaseVi
                     512
                 )
             }
-        }
+        }*/
 
     @Suppress("UNCHECKED_CAST")
     class Factory(private val profileRepository: ProfileRepository) : ViewModelProvider.Factory {

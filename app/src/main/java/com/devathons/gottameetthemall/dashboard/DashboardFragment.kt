@@ -10,11 +10,19 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.devathons.gottameetthemall.MyApplication
-import com.devathons.gottameetthemall.data.User
 import com.devathons.gottameetthemall.databinding.FragmentDashboardBinding
 import kotlinx.android.synthetic.main.fragment_dashboard.*
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.distinctUntilChanged
+import timber.log.Timber
+import kotlin.coroutines.CoroutineContext
 
-class DashboardFragment : Fragment() {
+class DashboardFragment : Fragment(), CoroutineScope {
+
+    private val job = SupervisorJob()
+    override val coroutineContext: CoroutineContext = job + Dispatchers.Main
+
     private val viewBinding by lazy { FragmentDashboardBinding.inflate(layoutInflater) }
 
     private val viewModel: DashboardViewModel by lazy {
@@ -32,18 +40,38 @@ class DashboardFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        val currentUser = viewModel.currentUser
-        if (currentUser == null) {
-            createMyProfile()
+        Timber.e("here")
+        val glide = Glide.with(this)
+        //Timber.e("here2 ${viewModel.isCurrentUserExists}")
+        /*if (!viewModel.isCurrentUserExists) {
             return
+        }*/
+        Timber.e("here3")
+        launch {
+            Timber.e("here4")
+            viewModel.getFlowUser()
+                .distinctUntilChanged()
+                .collect {
+                    Timber.e("here7 $it")
+                    if (it == null){
+                        createMyProfile()
+                    }else {
+                        Timber.e("here8 $it")
+                        with(viewBinding) {
+                            displayQrCodeButton.setOnClickListener {
+                                QrCodeDialogFragment().show(
+                                    parentFragmentManager,
+                                    null
+                                )
+                            }
+                            profileImage.setOnClickListener { displayMyProfile() }
+                            profileName.text = "${it.firstName} ${it.lastName}"
+                            profileJob.text = it.job
+                        }
+                        glide.load(it.picture).into(viewBinding.profileImage)
+                    }
+                }
         }
-        with(viewBinding) {
-            displayQrCodeButton.setOnClickListener { QrCodeDialogFragment().show(parentFragmentManager, null) }
-            profileImage.setOnClickListener { displayMyProfile() }
-            profileName.text = "${currentUser.firstName} ${currentUser.lastName}"
-            profileJob.text = currentUser.job
-        }
-        Glide.with(this).load(currentUser.picture).into(viewBinding.profileImage)
 
         val users = viewModel.users
         val discovered = users.count { it != null }
@@ -74,5 +102,10 @@ class DashboardFragment : Fragment() {
     private fun displayMyProfile() {
         val action = DashboardFragmentDirections.actionDashboardFragmentToProfileFragment()
         findNavController().navigate(action)
+    }
+
+    override fun onPause() {
+        job.cancel()
+        super.onPause()
     }
 }

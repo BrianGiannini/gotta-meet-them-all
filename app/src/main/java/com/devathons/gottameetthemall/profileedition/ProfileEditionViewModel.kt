@@ -10,7 +10,7 @@ import kotlinx.coroutines.runBlocking
 
 class ProfileEditionViewModel(private val profileRepository: ProfileRepository) : BaseViewModel() {
 
-    fun getCurrentUser(): User? = runBlocking { profileRepository.getCurrentUser() }
+    //fun getCurrentUser(): User? = profileRepository.getCurrentUser()
 
     fun saveProfile(firstName: String, lastName: String, job: String, description: String) {
         launch {

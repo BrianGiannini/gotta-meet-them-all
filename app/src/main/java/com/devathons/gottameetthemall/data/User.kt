@@ -1,6 +1,5 @@
 package com.devathons.gottameetthemall.data
 
-import android.content.res.Resources
 import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -10,8 +9,8 @@ import kotlinx.android.parcel.Parcelize
 @Entity(primaryKeys = ["firstName", "lastName"])
 @Parcelize
 data class User(
-    @ColumnInfo(name = "firstName") val firstName: String,
-    @ColumnInfo(name = "lastName") val lastName: String,
+    @ColumnInfo(name = "firstName") val firstName: String = "",
+    @ColumnInfo(name = "lastName") val lastName: String = "",
     @ColumnInfo(name = "job") val job: String? = null,
     @ColumnInfo(name = "description") val description: String? = null,
     @ColumnInfo(name = "picture") val picture: Int? = R.drawable.portrait_placeholder,

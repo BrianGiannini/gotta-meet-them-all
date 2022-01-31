@@ -41,7 +41,7 @@ class ProfileEditionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getCurrentUser()?.let { initProfileValue(it) }
+        //viewModel.getCurrentUser()?.let { initProfileValue(it) }
         resumeEdition()
 
         binding.saveProfileButton.setOnClickListener {

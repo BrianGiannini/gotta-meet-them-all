@@ -25,7 +25,7 @@ class QrCodeDialogFragment : DialogFragment() {
 
             val dialog = builder.create()
             dialog.setOnShowListener {
-                viewModel.qrCode()?.let { viewBinding.qrcode.setImageBitmap(viewModel.qrCode()) }
+                //viewModel.qrCode()?.let { viewBinding.qrcode.setImageBitmap(viewModel.qrCode()) }
                 viewBinding.progress.isVisible = false
             }
 

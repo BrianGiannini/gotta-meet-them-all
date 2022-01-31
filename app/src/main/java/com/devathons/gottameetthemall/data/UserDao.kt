@@ -5,8 +5,11 @@ import androidx.room.*
 @Dao
 interface UserDao {
 
+    @Query("SELECT EXISTS(SELECT * FROM user WHERE isCurrent = 1)")
+    suspend fun isCurrentUserExist(): Boolean
+
     @Query("SELECT * FROM user WHERE isCurrent = 1")
-    suspend fun getCurrentUser(): User?
+    suspend fun getCurrentUser(): User
 
     @Query("SELECT * FROM user WHERE firstName =:firstName AND lastName =:lastName")
     suspend fun getUser(firstName: String, lastName: String?): User

@@ -14,13 +14,23 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.devathons.gottameetthemall.MyApplication
 import com.devathons.gottameetthemall.R
-import com.devathons.gottameetthemall.dashboard.DashboardFragmentDirections
 import com.devathons.gottameetthemall.data.User
 import com.devathons.gottameetthemall.databinding.FragmentProfileBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.*
+import kotlin.coroutines.CoroutineContext
 
-class ProfileFragment : Fragment(R.layout.fragment_profile), TextToSpeech.OnInitListener {
+class ProfileFragment : Fragment(R.layout.fragment_profile), CoroutineScope,
+    TextToSpeech.OnInitListener {
+
+    private val job = SupervisorJob()
+    override val coroutineContext: CoroutineContext = job + Dispatchers.Main
 
     private lateinit var tts: TextToSpeech
 
@@ -52,13 +62,20 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), TextToSpeech.OnInit
         tts = TextToSpeech(requireContext(), this)
 
         val args = retrieveArguments()
-        var user = args.user
+        val user = args.user
 
         if (user == null) {
-            user = viewModel.getCurrentUser()
-            binding.editProfileButton.isVisible = true
-        }
-        user?.let {
+            launch {
+                viewModel.getFlowUser()
+                    .distinctUntilChanged()
+                    .collect {
+                        if (it != null) {
+                            initProfileValue(it)
+                        }
+                        binding.editProfileButton.isVisible = true
+                    }
+            }
+        } else {
             initProfileValue(user)
             userSpeech = user
         }
