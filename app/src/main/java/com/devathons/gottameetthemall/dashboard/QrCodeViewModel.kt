@@ -9,6 +9,7 @@ import com.devathons.gottameetthemall.profile.ProfileViewModel
 import com.google.gson.Gson
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
 class QrCodeViewModel(private val profileRepository: ProfileRepository) : BaseViewModel() {
@@ -16,16 +17,14 @@ class QrCodeViewModel(private val profileRepository: ProfileRepository) : BaseVi
     private val barcodeEncoder = BarcodeEncoder()
     private var gson = Gson()
 
-    fun qrCode(): Bitmap? =
-        runBlocking {
-            profileRepository.getCurrentUser()?.let {
-                barcodeEncoder.encodeBitmap(
-                    gson.toJson(profileRepository.getCurrentUser()?.generateQRCode()),
-                    BarcodeFormat.QR_CODE,
-                    512,
-                    512
-                )
-            }
+    suspend fun qrCode(): Bitmap? =
+        profileRepository.getCurrentUser().let {
+            barcodeEncoder.encodeBitmap(
+                gson.toJson(profileRepository.getCurrentUser().first()?.generateQRCode()),
+                BarcodeFormat.QR_CODE,
+                512,
+                512
+            )
         }
 
     @Suppress("UNCHECKED_CAST")

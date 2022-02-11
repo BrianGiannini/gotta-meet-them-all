@@ -14,13 +14,20 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.devathons.gottameetthemall.MyApplication
 import com.devathons.gottameetthemall.R
-import com.devathons.gottameetthemall.dashboard.DashboardFragmentDirections
 import com.devathons.gottameetthemall.data.User
 import com.devathons.gottameetthemall.databinding.FragmentProfileBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.*
+import kotlin.coroutines.CoroutineContext
 
-class ProfileFragment : Fragment(R.layout.fragment_profile), TextToSpeech.OnInitListener {
+class ProfileFragment : Fragment(R.layout.fragment_profile), TextToSpeech.OnInitListener, CoroutineScope {
+    private val job = SupervisorJob()
+    override val coroutineContext: CoroutineContext = job + Dispatchers.Main
 
     private lateinit var tts: TextToSpeech
 
@@ -48,31 +55,32 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), TextToSpeech.OnInit
     override fun onResume() {
         super.onResume()
 
-
         tts = TextToSpeech(requireContext(), this)
 
         val args = retrieveArguments()
-        var user = args.user
 
-        if (user == null) {
-            user = viewModel.getCurrentUser()
-            binding.editProfileButton.isVisible = true
-        }
-        user?.let {
-            initProfileValue(user)
-            userSpeech = user
+        launch {
+            args.user?.let { setUser(it) }
         }
 
         binding.picture.setOnClickListener {
-            if (user?.firstName != null) {
-                speakOut(userSpeech)
-            }
+            speakOut(userSpeech)
         }
 
         binding.editProfileButton.setOnClickListener {
             val action = ProfileFragmentDirections.actionProfileFragmentToProfileEditionFragment()
             findNavController().navigate(action)
         }
+    }
+
+    private suspend fun setUser(user: User) {
+        viewModel.getCurrentUser().collect {
+            if (it != null) {
+                userSpeech = it
+            }
+            initProfileValue(user)
+        }
+        binding.editProfileButton.isVisible = true
     }
 
     private fun initProfileValue(user: User) {
@@ -110,7 +118,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), TextToSpeech.OnInit
                 speakOut(userSpeech)
             }
         } else {
-            Log.e("TTS", "Initilization Failed!")
+            Timber.tag("TTS").e("Initilization Failed!")
         }
     }
 

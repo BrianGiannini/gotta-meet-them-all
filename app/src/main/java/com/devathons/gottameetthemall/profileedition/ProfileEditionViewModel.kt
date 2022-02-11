@@ -10,20 +10,18 @@ import kotlinx.coroutines.runBlocking
 
 class ProfileEditionViewModel(private val profileRepository: ProfileRepository) : BaseViewModel() {
 
-    fun getCurrentUser(): User? = runBlocking { profileRepository.getCurrentUser() }
+    fun getCurrentUser() = profileRepository.getCurrentUser()
 
-    fun saveProfile(firstName: String, lastName: String, job: String, description: String) {
-        launch {
-            profileRepository.updateProfile(
-                User(
-                    firstName = firstName,
-                    lastName = lastName,
-                    job = job,
-                    description = description,
-                    isCurrent = true
-                )
+    suspend fun saveProfile(firstName: String, lastName: String, job: String, description: String) {
+        profileRepository.updateProfile(
+            User(
+                firstName = firstName,
+                lastName = lastName,
+                job = job,
+                description = description,
+                isCurrent = true
             )
-        }
+        )
     }
 
     @Suppress("UNCHECKED_CAST")

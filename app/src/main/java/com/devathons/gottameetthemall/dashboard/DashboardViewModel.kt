@@ -13,8 +13,8 @@ class DashboardViewModel(
     private val usersRepository: UsersRepository
 ) : BaseViewModel() {
 
-    val currentUser get() = runBlocking { profileRepository.getCurrentUser() }
-    val users: List<User?> get() = runBlocking { usersRepository.getAllUsers() }
+    val currentUser get() = profileRepository.getCurrentUser()
+    val users get() = usersRepository.getKnownUsers()
 
     @Suppress("UNCHECKED_CAST")
     class Factory(

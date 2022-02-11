@@ -1,10 +1,11 @@
 package com.devathons.gottameetthemall.data
 
+
 class UsersRepository(private val userDao: UserDao) {
 
-    suspend fun getAllUsers(): List<User?> = getKnownUsers().completeWithNulls(TOTAL_OF_USERS)
+//    suspend fun getAllUsers(): List<User?> = getKnownUsers().first().completeWithNulls(TOTAL_OF_USERS)
 
-    suspend fun getKnownUsers(): MutableList<User?> = userDao.getKnownUsers()
+    fun getKnownUsers() = userDao.getKnownUsers()
 
     suspend fun addNewUser(user: User) {
         userDao.insertUser(user)

@@ -14,9 +14,15 @@ import com.bumptech.glide.Glide
 import com.devathons.gottameetthemall.MyApplication
 import com.devathons.gottameetthemall.data.User
 import com.devathons.gottameetthemall.databinding.FragmentProfileEditionBinding
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
+import timber.log.Timber
+import kotlin.coroutines.CoroutineContext
 
 
-class ProfileEditionFragment : Fragment() {
+class ProfileEditionFragment : Fragment(), CoroutineScope {
+    private val job = SupervisorJob()
+    override val coroutineContext: CoroutineContext = job + Dispatchers.Main
 
     private var _binding: FragmentProfileEditionBinding? = null
 
@@ -41,20 +47,21 @@ class ProfileEditionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getCurrentUser()?.let { initProfileValue(it) }
+        launch {
+            viewModel.getCurrentUser().collect {
+                if (it != null) {
+                    initProfileValue(it)
+                }
+            }
+        }
+
         resumeEdition()
 
         binding.saveProfileButton.setOnClickListener {
-            viewModel.saveProfile(
-                binding.firstName.text.toString(),
-                binding.lastName.text.toString(),
-                binding.job.text.toString(),
-                binding.description.text.toString()
-            )
-
-            findNavController().popBackStack()
+            launch {
+                saveProfile()
+            }
         }
-
 
         if (binding.firstName.text.isEmpty()) {
             binding.firstName.addTextChangedListener(object : TextWatcher {
@@ -68,6 +75,18 @@ class ProfileEditionFragment : Fragment() {
                 override fun afterTextChanged(s: Editable?) {
                 }
             })
+        }
+    }
+
+    private suspend fun saveProfile() {
+        with(binding) {
+            viewModel.saveProfile(
+                firstName.text.toString(),
+                lastName.text.toString(),
+                job.text.toString(),
+                description.text.toString()
+            )
+            findNavController().popBackStack()
         }
     }
 

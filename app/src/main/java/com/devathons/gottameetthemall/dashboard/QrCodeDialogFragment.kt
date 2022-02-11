@@ -8,8 +8,15 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.devathons.gottameetthemall.MyApplication
 import com.devathons.gottameetthemall.databinding.DialogQrCodeBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
-class QrCodeDialogFragment : DialogFragment() {
+class QrCodeDialogFragment : DialogFragment(), CoroutineScope {
+    private val job = SupervisorJob()
+    override val coroutineContext: CoroutineContext = job + Dispatchers.Main
 
     private val viewBinding by lazy { DialogQrCodeBinding.inflate(layoutInflater) }
 
@@ -25,8 +32,12 @@ class QrCodeDialogFragment : DialogFragment() {
 
             val dialog = builder.create()
             dialog.setOnShowListener {
-                viewModel.qrCode()?.let { viewBinding.qrcode.setImageBitmap(viewModel.qrCode()) }
-                viewBinding.progress.isVisible = false
+                launch {
+                    viewModel.qrCode()?.let { bitmap ->
+                        viewBinding.qrcode.setImageBitmap(bitmap)
+                        viewBinding.progress.isVisible = false
+                    }
+                }
             }
 
             return dialog
