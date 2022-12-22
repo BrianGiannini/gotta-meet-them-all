@@ -13,8 +13,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.GottaMeetThemAll"
-        android:windowSoftInputMode="adjustResize">
+        android:theme="@style/Theme.GottaMeetThemAll">
 
         <meta-data
             android:name="com.google.mlkit.vision.DEPENDENCIES"
@@ -25,7 +24,6 @@
             android:configChanges="screenSize|orientation|keyboardHidden"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"
             tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

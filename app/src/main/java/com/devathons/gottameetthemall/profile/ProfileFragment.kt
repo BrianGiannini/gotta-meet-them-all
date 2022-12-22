@@ -14,7 +14,6 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.devathons.gottameetthemall.MyApplication
 import com.devathons.gottameetthemall.R
-import com.devathons.gottameetthemall.dashboard.DashboardFragmentDirections
 import com.devathons.gottameetthemall.data.User
 import com.devathons.gottameetthemall.databinding.FragmentProfileBinding
 import timber.log.Timber
@@ -26,8 +25,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), TextToSpeech.OnInit
 
     private var _binding: FragmentProfileBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
     var userSpeech: User = User("", "")
 
@@ -100,7 +98,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), TextToSpeech.OnInit
             // set US English as language for tts
             val result = tts.setLanguage(Locale.ENGLISH)
 
-            Timber.d("TTS succesfully initiallised")
+            Timber.d("TTS successfully initialized")
 
             if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                 Timber.e("The Language specified is not supported!")
@@ -110,7 +108,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), TextToSpeech.OnInit
                 speakOut(userSpeech)
             }
         } else {
-            Log.e("TTS", "Initilization Failed!")
+            Log.e("TTS", "Initialization Failed!")
         }
     }
 

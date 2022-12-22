@@ -1,14 +1,12 @@
 <resources>
     <string name="app_name">Gotta Meet Them All</string>
-    <string name="first_name">Prénom*</string>
-    <string name="save">Sauvegarder</string>
-    <string name="name">Nom</string>
-    <string name="description">Champ libre</string>
-    <string name="job">Rôle/Métier</string>
+    <string name="first_name">Firstname*</string>
+    <string name="save">Save</string>
+    <string name="name">Name</string>
+    <string name="description">Custom field</string>
+    <string name="job">Job</string>
     <string name="unknown_user">Unknown user</string>
     <string name="scan_user_hint">Find this person and scan their QR code!</string>
     <string name="go_to_scan_button_text">Go to Scan Button</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="edit">Modifier</string>
+    <string name="edit">Modify</string>
 </resources>
